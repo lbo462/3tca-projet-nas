@@ -85,3 +85,16 @@ $ git push origin <your-branch>  # Push your commit to github
 ```
 
 The use of github might be handy for beginners so don't hesitate to ask.
+
+#### **Work on branches**
+
+To work on a specifiq branch:
+
+```shell
+$ git fetch origin  # retrieve remote branches
+$ git checkout 1-simple-backbone  # change to branch you work on
+```
+
+**! Please, don't work on branch master. The branch master should be a clean branch. !**
+
+When you work on a new issue, create the issue (via the milestone) and a related branch on github, then checkout locally with the above commands. When you work is done and ready for the branch master, create a pull request that will be reviewed before merging.
