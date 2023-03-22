@@ -89,6 +89,7 @@ To work on a specifiq branch:
 
 ```shell
 $ git fetch origin  # retrieve remote branches
+
 $ git checkout <your-branch>  # change to branch you work on
 ```
 
