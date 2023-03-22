@@ -7,5 +7,7 @@ __pycache__/
 .idea/
 .vscode/
 
-# cisco image should not be present inside the git folder
-c7200-advipservicesk9-mz.152-4.S5.image
+
+
+
+
