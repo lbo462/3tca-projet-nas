@@ -33,7 +33,6 @@ Step-by-step process:
 
 1. Generate a SSH key and add it to your SSH-agent ([detailed tutorial](https://docs.github.com/fr/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent))
 
-On Linux :
 ```shell
 ssh-keygen -t ed25519 -C "your_email@example.com"
 ```
@@ -47,8 +46,6 @@ $ ssh-add ~/.ssh/id_ed25519
 ```
 
 2. Add it to your github profile
-
-On Linux :
 
 ```shell
 cat ~/.ssh/id_ed25519.pub
@@ -92,7 +89,7 @@ To work on a specifiq branch:
 
 ```shell
 $ git fetch origin  # retrieve remote branches
-$ git checkout 1-simple-backbone  # change to branch you work on
+$ git checkout <your-branch>  # change to branch you work on
 ```
 
 **! Please, don't work on branch master. The branch master should be a clean branch. !**
