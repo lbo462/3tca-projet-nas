@@ -1,0 +1,87 @@
+# 3TCA Projet NAS
+
+Léo BONNAIRE Léonard PRINCE Kowsigan ALAGARAJAH Hédi SFAXI Matthieu NSI LA Mounir RADJABOU
+
+## How to use git
+
+<hr>
+
+### **1. Install git on your machine**
+
+On Windows : Install [Git Bash](https://git-scm.com/downloads)
+
+On Linux : probably already installed (try `git --version` to check)
+
+### **2. Configure git**
+
+#### **2.1 Configure git locally**
+
+Configure your name and email with the following commands :
+
+```shell
+$ git config --global user.name "your name here"
+$ git config --global user.email "your email here"
+```
+
+#### **2.2 Connection to github repo**
+
+First thing needed is to create a set of SSH keys to access this repo.
+
+(See tutorial full here : [https://docs.github.com/fr/authentication/connecting-to-github-with-ssh](https://docs.github.com/fr/authentication/connecting-to-github-with-ssh))
+
+Step-by-step process:
+
+1. Generate a SSH key and add it to your SSH-agent ([detailed tutorial](https://docs.github.com/fr/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent))
+
+On Linux :
+```shell
+ssh-keygen -t ed25519 -C "your_email@example.com"
+```
+Do not change the default folder and enter a solid passphrase.
+
+Then add your key to your SSH agent
+
+```shell
+$ eval "$(ssh-agent -s)"
+$ ssh-add ~/.ssh/id_ed25519
+```
+
+2. Add it to your github profile
+
+On Linux :
+
+```shell
+cat ~/.ssh/id_ed25519.pub
+```
+Copy the exact output of this command and paste it on [Github](https://github.com/settings/ssh/new).
+
+
+### **3. Clone the repo**
+
+```shell
+git clone git@github.com:leoNord462/3tca-projet-nas.git
+```
+
+This creates a folder named after the github repo. `cd` to this repo to work within it.
+
+<br>
+
+With the above configuration, you should be able to access with read and write access to the distance repo.
+
+### **Every day use**
+
+Before working on the repo, remember to pull the changes made by other.
+
+```shell
+git pull origin <your-branch>
+```
+
+When you finished a task and want to commit your changes, use
+
+```shell
+$ git add -A  # This add your files to be commited
+$ git commit -m "an-explicit-message-to-describe-your-work"  # Commit your changes on your local repo
+$ git push origin <your-branch>  # Push your commit to github
+```
+
+The use of github might be handy for beginners so don't hesitate to ask.
