@@ -1,0 +1,109 @@
+Configuration BGP
+
+PE1:
+Activation bgp 
+
+conf t
+router bgp 100
+bgp router-id 1.1.1.1
+
+Déclaration des voisins 
+neighbor 50.50.50.1 remote-as 101
+address-family ipv4 unicast
+neighbor 50.50.50.1 activate
+
+neighbor 100.100.100.1 remote-as 102
+address-family ipv4 unicast
+neighbor 100.100.100.1 activate
+
+neighbor 30.30.30.2 remote-as 100
+address-family ipv4 unicast
+neighbor 30.30.30.2 activate
+
+exit 
+network 7.7.7.0 mask 255.255.255.0
+network 100.100.100.0 mask 255.255.255.0
+network 50.50.50.0 mask 255.255.255.0
+
+CE1:
+Activation bgp 
+
+conf t
+router bgp 101
+bgp router-id 2.2.2.2
+
+Déclaration des voisins 
+neighbor 50.50.50.2 remote-as 100
+address-family ipv4 unicast
+neighbor 50.50.50.2 activate
+
+exit 
+network 6.6.6.0 mask 255.255.255.0
+
+CE2:
+Activation bgp 
+
+conf t
+router bgp 102
+bgp router-id 3.3.3.3
+
+Déclaration des voisins 
+neighbor 100.100.100.2 remote-as 100
+address-family ipv4 unicast
+neighbor 100.100.100.2 activate
+
+PE2:
+Activation bgp 
+
+conf t
+router bgp 100
+bgp router-id 4.4.4.4
+
+Déclaration des voisins 
+neighbor 150.150.150.1 remote-as 103
+address-family ipv4 unicast
+neighbor 150.150.150.1 activate
+
+neighbor 200.200.200.1 remote-as 104
+address-family ipv4 unicast
+neighbor 200.200.200.1 activate
+
+neighbor 7.7.7.1 remote-as 100
+address-family ipv4 unicast
+neighbor 7.7.7.1 activate
+
+exit 
+network 30.30.30.0 mask 255.255.255.0
+network 150.150.150.0 mask 255.255.255.0
+network 200.200.200.0 mask 255.255.255.0
+
+CE3:
+Activation bgp 
+
+conf t
+router bgp 103
+bgp router-id 5.5.5.5
+
+Déclaration des voisins 
+neighbor 150.150.150.2 remote-as 100
+address-family ipv4 unicast
+neighbor 150.150.150.2 activate
+
+CE4:
+Activation bgp 
+
+conf t
+router bgp 104
+bgp router-id 6.6.6.6
+
+Déclaration des voisins 
+neighbor 200.200.200.2 remote-as 100
+address-family ipv4 unicast
+neighbor 200.200.200.200.2 activate
+
+
+
+
+
+
+
