@@ -1,0 +1,23 @@
+{
+    "backbone_devices": [
+        {
+            "id": 1,
+            "name": "Router 1",
+            "type": "edge",
+            "os_version": "cisco_router",
+            "bb_links": [2],
+            "clients": []
+        },
+        {
+            "id": 2,
+            "name": "Router 2",
+            "type": "core",
+            "os_version": "cisco_router",
+            "bb_links": [1]
+        }
+    ],
+
+    "clients": [
+        
+    ]
+}
