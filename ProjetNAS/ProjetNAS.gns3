@@ -211,6 +211,7 @@
             {
                 "filters": {},
                 "link_id": "ab5fa241-49a4-4e85-aabb-78fad7ec4779",
+                "link_style": {},
                 "nodes": [
                     {
                         "adapter_number": 2,
@@ -242,6 +243,7 @@
             {
                 "filters": {},
                 "link_id": "198bd06d-a756-4626-b191-d3af166bfa26",
+                "link_style": {},
                 "nodes": [
                     {
                         "adapter_number": 2,
@@ -273,6 +275,7 @@
             {
                 "filters": {},
                 "link_id": "0edda0b3-4eb7-41a4-ad83-1db597506925",
+                "link_style": {},
                 "nodes": [
                     {
                         "adapter_number": 1,
@@ -304,6 +307,7 @@
             {
                 "filters": {},
                 "link_id": "82b42a73-1e79-4850-b64f-a86bc325ddd9",
+                "link_style": {},
                 "nodes": [
                     {
                         "adapter_number": 1,
@@ -335,6 +339,7 @@
             {
                 "filters": {},
                 "link_id": "176f2cce-52b0-4a36-bf97-12ac98883bfc",
+                "link_style": {},
                 "nodes": [
                     {
                         "adapter_number": 2,
@@ -366,6 +371,7 @@
             {
                 "filters": {},
                 "link_id": "bc3260c7-ec42-4269-9883-856f8ba84dc6",
+                "link_style": {},
                 "nodes": [
                     {
                         "adapter_number": 1,
@@ -397,6 +403,7 @@
             {
                 "filters": {},
                 "link_id": "d29970fa-658a-4969-9ad7-507ae87f97fa",
+                "link_style": {},
                 "nodes": [
                     {
                         "adapter_number": 2,
@@ -428,6 +435,7 @@
             {
                 "filters": {},
                 "link_id": "cfe419a3-4e8f-4d7b-adbc-9f49abf99b2b",
+                "link_style": {},
                 "nodes": [
                     {
                         "adapter_number": 1,
@@ -459,6 +467,7 @@
             {
                 "filters": {},
                 "link_id": "ad30fd09-28b4-408a-93c6-b3553e180767",
+                "link_style": {},
                 "nodes": [
                     {
                         "adapter_number": 1,
@@ -490,6 +499,7 @@
             {
                 "filters": {},
                 "link_id": "92e4780a-6210-4145-915d-de7f9a645721",
+                "link_style": {},
                 "nodes": [
                     {
                         "adapter_number": 2,
@@ -521,6 +531,7 @@
             {
                 "filters": {},
                 "link_id": "61551a27-f36a-420c-bc8c-d95f0af65cf8",
+                "link_style": {},
                 "nodes": [
                     {
                         "adapter_number": 3,
@@ -1383,6 +1394,6 @@
     },
     "type": "topology",
     "variables": null,
-    "version": "2.2.10",
+    "version": "2.2.38",
     "zoom": 50
 }

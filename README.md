@@ -1,6 +1,6 @@
 # 3TCA Projet NAS
 
-Léo BONNAIRE Léonard PRINCE Kowsigan ALAGARAJAH Hédi SFAXI Matthieu NSI LA Mounir RADJABOU
+Léo BONNAIRE Léonard PRINCE Kowsigan ALAGARAJAH Hédi SFAXI Matthieu NSI ELA Mounir RADJABOU
 
 ## How to use git
 
