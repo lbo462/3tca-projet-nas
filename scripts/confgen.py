@@ -1,4 +1,5 @@
 import json
+
 from backbone_device import BackboneDevice
 
 
@@ -7,19 +8,17 @@ def main():
         raw_file = f.read()
     conf_dict = json.loads(raw_file)
 
-    for r in conf_dict["backbone_devices"]:
-        id_ = r["id"]
-        for l in r["bb_links"]:
-            bid = max(id_, l)
-            lid = min(id_, l)
+    for backbone_device_dict in conf_dict["backbone_devices"]:
+        # create backbone_device object from its dict
+        backbone_device = BackboneDevice(backbone_device_dict)
 
-            personal_bit = 1
-            if r["id"] == bid:
-                personal_bit = 2
-            address = f"{int(bid / 255)}.{bid%255}.{lid%255}.{(int(lid/255) << 2) + personal_bit}"
-            print(address)
+        print(f"Created device {backbone_device.id}.")
 
-        print("#############")
+        # print IP addresses (debug)
+        for neighbor_id in backbone_device.bb_links:
+            print(
+                f"IP for neighbor #{neighbor_id} : {backbone_device.get_ip(neighbor_id)}"
+            )
 
 
 if __name__ == "__main__":
