@@ -1,4 +1,5 @@
 import json
+from backbone_device import BackboneDevice
 
 
 def main():
@@ -7,8 +8,8 @@ def main():
     conf_dict = json.loads(raw_file)
 
     for r in conf_dict["backbone_devices"]:
-        id_ = r['id']
-        for l in r['bb_links']:
+        id_ = r["id"]
+        for l in r["bb_links"]:
             bid = max(id_, l)
             lid = min(id_, l)
 
@@ -18,11 +19,8 @@ def main():
             address = f"{int(bid / 255)}.{bid%255}.{lid%255}.{(int(lid/255) << 2) + personal_bit}"
             print(address)
 
-    
-
         print("#############")
 
 
 if __name__ == "__main__":
     main()
-
