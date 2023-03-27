@@ -1,0 +1,41 @@
+Address loopback : 
+
+PE1
+
+conf t 
+
+int loopback 0
+ip address 1.0.0.1 255.255.255.0
+ip ospf 10 area 0
+end
+write
+
+PE2
+
+conf t 
+mpls ldp router-id Loopback 0 force
+int loopback 0
+ip address 1.0.0.4 255.255.255.0
+ip ospf 10 area 0
+end
+write
+
+P1
+
+conf t 
+mpls ldp router-id Loopback 0 force
+int loopback 0
+ip address 1.0.0.2 255.255.255.0
+ip ospf 10 area 0
+end
+write
+
+P2
+
+conf t 
+mpls ldp router-id Loopback 0 force
+int loopback 0
+ip address 1.0.0.3 255.255.255.0
+ip ospf 10 area 0
+end
+write
