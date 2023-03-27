@@ -1,0 +1,89 @@
+Config pour un PE : 
+
+Réseau 
+
+conf t 
+
+interface @interface
+ip address @IP @masque
+no shutdown
+exit
+
+interface @interface
+ip address @IP @masque
+no shutdown
+exit
+
+interface @interface
+ip address @IP @masque
+no shutdown
+exit
+
+OSPF config 
+
+conf t
+
+router ospf 10
+router-id @routerId
+network @network 0.0.0.0 area @area
+exit
+
+exit
+
+write
+
+BGP config 
+
+à venir 
+
+MPLS config
+
+à venir 
+
+VPN config 
+
+**********************************************************************
+Config pour un P 
+
+Réseau 
+
+conf t 
+
+interface @interface 
+ip address @IP @masque
+no shutdown
+exit
+
+interface @interface
+ip address @IP @masque
+no shutdown
+exit
+
+OSPF config 
+
+conf t
+
+router ospf 10
+router-id @routerId
+network @network 0.0.0.0 area @area
+exit
+
+exit
+
+write
+
+BGP config 
+
+à venir 
+
+MPLS config
+
+à venir 
+
+VPN config 
+
+à venir 
+ 
+
+
+
