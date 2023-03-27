@@ -12,13 +12,7 @@ def main():
         # create backbone_device object from its dict
         backbone_device = BackboneDevice(backbone_device_dict)
 
-        print(f"Created device {backbone_device.id}.")
-
-        # print IP addresses (debug)
-        for neighbor_id in backbone_device.bb_links:
-            print(
-                f"IP for neighbor #{neighbor_id} : {backbone_device.get_ip(neighbor_id)} 255.255.255.0"
-            )
+        print(f"Created {backbone_device.name} :\n{backbone_device.get_config()}")
 
 
 if __name__ == "__main__":
