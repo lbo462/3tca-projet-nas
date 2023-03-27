@@ -17,7 +17,7 @@ def main():
         # print IP addresses (debug)
         for neighbor_id in backbone_device.bb_links:
             print(
-                f"IP for neighbor #{neighbor_id} : {backbone_device.get_ip(neighbor_id)}"
+                f"IP for neighbor #{neighbor_id} : {backbone_device.get_ip(neighbor_id)} 255.255.255.0"
             )
 
 
