@@ -69,6 +69,7 @@ class BackboneDevice:
         conf += f"""
 router ospf 10
 router-id {self._ospf_id}
+exit
 """
 
         # ------------
