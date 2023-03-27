@@ -10,13 +10,17 @@ class NeighborNotLinked(Exception):
     pass
 
 
+# NETWORK SETUP
 INTERFACE_NAMES = [
-    "GigabitEthernet0/0",
-    "GigabitEthernet0/1",
-    "GigabitEthernet0/2",
+    "GigabitEthernet1/0",
+    "GigabitEthernet2/0",
+    "GigabitEthernet3/0",
 ]
-
 INTERCO_MASK = "255.255.255.242"
+
+# OSPF CONFIG
+OSPF_AREA = "0"
+OSPF_PROCESS = "10"
 
 
 @dataclass
@@ -47,6 +51,10 @@ class BackboneDevice:
     @property
     def name(self):
         return self._name
+    
+    @property
+    def _ospf_id(self):
+        return f"{self._id}.{self._id}.{self._id}.{self._id}"
         
     def get_config(self) -> str:
         """
@@ -58,17 +66,31 @@ class BackboneDevice:
         # Global config
         # ------------
 
+        conf += f"""
+router ospf 10
+router-id {self._ospf_id}
+"""
 
         # ------------
         # Neighbor based config
         # ------------
         for i, n_id in enumerate(self._bb_links):
-            conf += f"""
-interface {self._interfaces[i]}
-ip address {self._get_ip(n_id)} {INTERCO_MASK}
+
+            ip_addr_on_int = self._get_ip(n_id)  # IP@ on interface facing neighbor
+
+        # configure interface
+            conf += f"""interface {self._interfaces[i]}
+ip address {ip_addr_on_int} {INTERCO_MASK}
 no shut
 exit
 """
+        # configure OSPF
+            conf += f"""router ospf {OSPF_PROCESS}
+network {ip_addr_on_int} 0.0.0.0 area {OSPF_AREA}
+exit
+"""
+
+        # conf += "write"
 
         return conf
 
