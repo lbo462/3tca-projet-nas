@@ -2,34 +2,19 @@
     "backbone_devices": [
         {
             "id": 1,
-            "name": "PE1",
+            "name": "R1",
             "type": "edge",
             "os_version": "cisco7200",
-            "bb_links": [3],
+            "bb_links": [2],
             "clients": []
         },
         {
             "id": 2,
-            "name": "PE2",
+            "name": "R2",
             "type": "edge",
             "os_version": "cisco7200",
-            "bb_links": [4],
+            "bb_links": [1],
             "clients": []
-        },
-        {
-            "id": 3,
-            "name": "P1",
-            "type": "core",
-            "os_version": "cisco7200",
-            "bb_links": [1, 4]
-        },
-
-        {
-            "id": 4,
-            "name": "P2",
-            "type": "core",
-            "os_version": "cisco7200",
-            "bb_links": [2, 3]
         }
     ],
 
