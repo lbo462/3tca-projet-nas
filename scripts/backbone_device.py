@@ -45,17 +45,17 @@ class BackboneDevice:
                 self._clients = device_dict["clients"]
         except KeyError:
             raise AppError("Badly formed dict")
-        
+
         self._interfaces = INTERFACE_NAMES
-        
+
     @property
     def name(self):
         return self._name
-    
+
     @property
     def _ospf_id(self):
         return f"{self._id}.{self._id}.{self._id}.{self._id}"
-        
+
     def get_config(self) -> str:
         """
         Return the config to write on the router
@@ -76,16 +76,15 @@ exit
         # Neighbor based config
         # ------------
         for i, n_id in enumerate(self._bb_links):
-
             ip_addr_on_int = self._get_ip(n_id)  # IP@ on interface facing neighbor
 
-        # configure interface
+            # configure interface
             conf += f"""interface {self._interfaces[i]}
 ip address {ip_addr_on_int} {INTERCO_MASK}
 no shut
 exit
 """
-        # configure OSPF
+            # configure OSPF
             conf += f"""router ospf {OSPF_PROCESS}
 network {ip_addr_on_int} 0.0.0.0 area {OSPF_AREA}
 exit
