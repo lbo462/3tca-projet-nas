@@ -30,7 +30,7 @@
                 "drawing_id": "7c8be4bc-9b08-4417-8087-1d2a9da2f6b5",
                 "locked": false,
                 "rotation": 0,
-                "svg": "<svg height=\"25\" width=\"108\"><text fill=\"#000000\" fill-opacity=\"1.0\" font-family=\"TypeWriter\" font-size=\"10.0\" font-weight=\"bold\">20.20.20.0/24</text></svg>",
+                "svg": "<svg height=\"24\" width=\"102\"><text fill=\"#000000\" fill-opacity=\"1.0\" font-family=\"TypeWriter\" font-size=\"10.0\" font-weight=\"bold\">20.20.20.0/24</text></svg>",
                 "x": 35,
                 "y": -84,
                 "z": 2
@@ -39,7 +39,7 @@
                 "drawing_id": "318352df-4ccc-4084-8550-abaed7c6891c",
                 "locked": false,
                 "rotation": 0,
-                "svg": "<svg height=\"25\" width=\"108\"><text fill=\"#000000\" fill-opacity=\"1.0\" font-family=\"TypeWriter\" font-size=\"10.0\" font-weight=\"bold\">10.10.10.0/24</text></svg>",
+                "svg": "<svg height=\"24\" width=\"102\"><text fill=\"#000000\" fill-opacity=\"1.0\" font-family=\"TypeWriter\" font-size=\"10.0\" font-weight=\"bold\">10.10.10.0/24</text></svg>",
                 "x": -213,
                 "y": -89,
                 "z": 2
@@ -48,7 +48,7 @@
                 "drawing_id": "a204d143-7f7d-4c33-9bc3-730b6e1786a4",
                 "locked": false,
                 "rotation": 0,
-                "svg": "<svg height=\"25\" width=\"108\"><text fill=\"#000000\" fill-opacity=\"1.0\" font-family=\"TypeWriter\" font-size=\"10.0\" font-weight=\"bold\">30.30.30.0/24</text></svg>",
+                "svg": "<svg height=\"24\" width=\"102\"><text fill=\"#000000\" fill-opacity=\"1.0\" font-family=\"TypeWriter\" font-size=\"10.0\" font-weight=\"bold\">30.30.30.0/24</text></svg>",
                 "x": 310,
                 "y": -70,
                 "z": 2
@@ -210,7 +210,7 @@
                 "drawing_id": "6a506752-82ee-4f75-b134-28fc72b7278c",
                 "locked": false,
                 "rotation": 0,
-                "svg": "<svg height=\"25\" width=\"58\"><text fill=\"#ef2929\" fill-opacity=\"1.0\" font-family=\"TypeWriter\" font-size=\"10.0\" font-weight=\"bold\">1.1.1.1</text></svg>",
+                "svg": "<svg height=\"24\" width=\"53\"><text fill=\"#ef2929\" fill-opacity=\"1.0\" font-family=\"TypeWriter\" font-size=\"10.0\" font-weight=\"bold\">1.1.1.1</text></svg>",
                 "x": -311,
                 "y": -27,
                 "z": 2
@@ -219,7 +219,7 @@
                 "drawing_id": "0a0609d0-1410-422e-8f40-45af0b7dcaba",
                 "locked": false,
                 "rotation": 0,
-                "svg": "<svg height=\"25\" width=\"58\"><text fill=\"#ef2929\" fill-opacity=\"1.0\" font-family=\"TypeWriter\" font-size=\"10.0\" font-weight=\"bold\">2.2.2.2</text></svg>",
+                "svg": "<svg height=\"24\" width=\"53\"><text fill=\"#ef2929\" fill-opacity=\"1.0\" font-family=\"TypeWriter\" font-size=\"10.0\" font-weight=\"bold\">2.2.2.2</text></svg>",
                 "x": -80,
                 "y": -10,
                 "z": 2
@@ -228,7 +228,7 @@
                 "drawing_id": "a921cf4d-a9b4-44d8-82d4-bcb4f561962b",
                 "locked": false,
                 "rotation": 0,
-                "svg": "<svg height=\"25\" width=\"58\"><text fill=\"#ef2929\" fill-opacity=\"1.0\" font-family=\"TypeWriter\" font-size=\"10.0\" font-weight=\"bold\">3.3.3.3</text></svg>",
+                "svg": "<svg height=\"24\" width=\"53\"><text fill=\"#ef2929\" fill-opacity=\"1.0\" font-family=\"TypeWriter\" font-size=\"10.0\" font-weight=\"bold\">3.3.3.3</text></svg>",
                 "x": 174,
                 "y": 2,
                 "z": 2
@@ -237,7 +237,7 @@
                 "drawing_id": "da54efa2-3bce-430a-a1c5-5bf26b9232df",
                 "locked": false,
                 "rotation": 0,
-                "svg": "<svg height=\"25\" width=\"58\"><text fill=\"#ef2929\" fill-opacity=\"1.0\" font-family=\"TypeWriter\" font-size=\"10.0\" font-weight=\"bold\">4.4.4.4</text></svg>",
+                "svg": "<svg height=\"24\" width=\"53\"><text fill=\"#ef2929\" fill-opacity=\"1.0\" font-family=\"TypeWriter\" font-size=\"10.0\" font-weight=\"bold\">4.4.4.4</text></svg>",
                 "x": 439,
                 "y": -5,
                 "z": 2
@@ -300,7 +300,7 @@
                 "drawing_id": "e09e7043-bbb1-4a6a-acf6-19273b70c74a",
                 "locked": false,
                 "rotation": 0,
-                "svg": "<svg height=\"25\" width=\"58\"><text fill=\"#73d216\" fill-opacity=\"1.0\" font-family=\"TypeWriter\" font-size=\"10.0\" font-weight=\"bold\">1.0.0.1</text></svg>",
+                "svg": "<svg height=\"24\" width=\"53\"><text fill=\"#73d216\" fill-opacity=\"1.0\" font-family=\"TypeWriter\" font-size=\"10.0\" font-weight=\"bold\">1.0.0.1</text></svg>",
                 "x": -310,
                 "y": -3,
                 "z": 2
@@ -309,7 +309,7 @@
                 "drawing_id": "8aea2cb3-09e0-45a2-bf09-5e534f2b29fa",
                 "locked": false,
                 "rotation": 0,
-                "svg": "<svg height=\"25\" width=\"58\"><text fill=\"#73d216\" fill-opacity=\"1.0\" font-family=\"TypeWriter\" font-size=\"10.0\" font-weight=\"bold\">1.0.0.2</text></svg>",
+                "svg": "<svg height=\"24\" width=\"53\"><text fill=\"#73d216\" fill-opacity=\"1.0\" font-family=\"TypeWriter\" font-size=\"10.0\" font-weight=\"bold\">1.0.0.2</text></svg>",
                 "x": 440,
                 "y": 15,
                 "z": 2
@@ -319,6 +319,7 @@
             {
                 "filters": {},
                 "link_id": "ab5fa241-49a4-4e85-aabb-78fad7ec4779",
+                "link_style": {},
                 "nodes": [
                     {
                         "adapter_number": 2,
@@ -350,6 +351,7 @@
             {
                 "filters": {},
                 "link_id": "198bd06d-a756-4626-b191-d3af166bfa26",
+                "link_style": {},
                 "nodes": [
                     {
                         "adapter_number": 2,
@@ -381,6 +383,7 @@
             {
                 "filters": {},
                 "link_id": "0edda0b3-4eb7-41a4-ad83-1db597506925",
+                "link_style": {},
                 "nodes": [
                     {
                         "adapter_number": 1,
@@ -412,6 +415,7 @@
             {
                 "filters": {},
                 "link_id": "82b42a73-1e79-4850-b64f-a86bc325ddd9",
+                "link_style": {},
                 "nodes": [
                     {
                         "adapter_number": 1,
@@ -443,6 +447,7 @@
             {
                 "filters": {},
                 "link_id": "176f2cce-52b0-4a36-bf97-12ac98883bfc",
+                "link_style": {},
                 "nodes": [
                     {
                         "adapter_number": 2,
@@ -474,6 +479,7 @@
             {
                 "filters": {},
                 "link_id": "bc3260c7-ec42-4269-9883-856f8ba84dc6",
+                "link_style": {},
                 "nodes": [
                     {
                         "adapter_number": 1,
@@ -505,6 +511,7 @@
             {
                 "filters": {},
                 "link_id": "d29970fa-658a-4969-9ad7-507ae87f97fa",
+                "link_style": {},
                 "nodes": [
                     {
                         "adapter_number": 2,
@@ -536,6 +543,7 @@
             {
                 "filters": {},
                 "link_id": "cfe419a3-4e8f-4d7b-adbc-9f49abf99b2b",
+                "link_style": {},
                 "nodes": [
                     {
                         "adapter_number": 1,
@@ -567,6 +575,7 @@
             {
                 "filters": {},
                 "link_id": "ad30fd09-28b4-408a-93c6-b3553e180767",
+                "link_style": {},
                 "nodes": [
                     {
                         "adapter_number": 1,
@@ -598,6 +607,7 @@
             {
                 "filters": {},
                 "link_id": "92e4780a-6210-4145-915d-de7f9a645721",
+                "link_style": {},
                 "nodes": [
                     {
                         "adapter_number": 2,
@@ -629,6 +639,7 @@
             {
                 "filters": {},
                 "link_id": "61551a27-f36a-420c-bc8c-d95f0af65cf8",
+                "link_style": {},
                 "nodes": [
                     {
                         "adapter_number": 3,
@@ -1491,6 +1502,6 @@
     },
     "type": "topology",
     "variables": null,
-    "version": "2.2.12",
-    "zoom": 50
+    "version": "2.2.38",
+    "zoom": 119
 }

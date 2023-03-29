@@ -13,8 +13,11 @@ INTERFACE_NAMES = [
 INTERCO_MASK = "255.255.255.252"
 
 # OSPF CONFIG
-OSPF_AREA = "0"
-OSPF_PROCESS = "10"
+OSPF_AREA = 0
+OSPF_PROCESS = 10
+
+# BGP CONFIG
+ASN = 101
 
 
 @dataclass
@@ -55,19 +58,30 @@ class BackboneDevice:
     def _formatted_id(self):
         return f"{self._id}.{self._id}.{self._id}.{self._id}"
 
+    @property
+    def _bgp_id(self):
+        return f"1.0.0.{self._id}"
+
     def get_config(self) -> str:
         """
         Return the config to write on the router
         """
-        conf = "conf t"  # conf is sent as CLI
+        conf = ""
 
         # ------------
         # Global config
         # ------------
 
-        conf += f"""
-router ospf 10
+        # OSPF
+        conf += f"""router ospf {OSPF_PROCESS}
 router-id {self._formatted_id}
+exit
+"""
+        # BGP
+        if self._type == "edge":
+            # configure BGP
+            conf += f"""router bgp {ASN}
+bgp router-id {self._bgp_id}
 exit
 """
 
@@ -77,19 +91,20 @@ exit
         for i, n_id in enumerate(self._bb_links):
             ip_addr_on_int = self._get_ip(n_id)  # IP@ on interface facing neighbor
 
-            # configure interface
+            # interface
             conf += f"""interface {self._interfaces[i]}
 ip address {ip_addr_on_int} {INTERCO_MASK}
 no shut
 exit
 """
-            # configure OSPF
+            # OSPF
             conf += f"""router ospf {OSPF_PROCESS}
 network {ip_addr_on_int} 0.0.0.0 area {OSPF_AREA}
 exit
 """
 
-        # conf += "write"
+            # BGP
+            # TODO
 
         return conf
 

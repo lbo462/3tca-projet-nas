@@ -9,7 +9,7 @@ JSON_FILE_NAME = "bb_config.json"
 
 HOST = "localhost"
 PORT = 3080
-PROJECT_NAME = "API TEST"
+PROJECT_NAME = "ProjetNAS"
 
 
 def main():

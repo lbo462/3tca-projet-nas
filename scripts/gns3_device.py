@@ -4,6 +4,9 @@ from time import sleep
 from backbone_device import BackboneDevice
 
 
+CLI_DELAY = 0.5
+
+
 class GNS3Device:
     def __init__(self, bb_device: BackboneDevice, host: str, port: int):
         self._bb_device = bb_device
@@ -15,17 +18,28 @@ class GNS3Device:
         Write config to GNS3 router
         """
         with Telnet(self._host, self._port) as tn:
+
+            def write(line_: str):
+                """
+                Transform line to byte and send to router with a delay
+                """
+                tn.write(bytearray(f"{line_}\r", "utf-8"))
+                sleep(CLI_DELAY)
+
+            # Retrieve config
             config = self._bb_device.get_config()
 
+            # Enable router CLI
+            write("en")
+
+            # Enable router CLI
+            write("conf t")
+
             for line in config.split("\n"):
-                # Format line to bytes with \r
-                line_as_byte = bytearray(f"{line}\r", "utf-8")
+                write(line)
 
-                # Write line to router
-                tn.write(line_as_byte)
+            # Exit config mode
+            write("end")
 
-                # Keep router CLI alive
-                sleep(0.5)
-
-            tn.write(b"end\r")
-            sleep(1)
+            # Write changes to startup config
+            write("write")
