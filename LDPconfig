@@ -21,13 +21,15 @@ exit
 exit
 write 
 
+
+
 =========================================
 PE2
 
 conf t
 
 int loopback 0
-ip address 2.2.2.2 255.255.255.255
+ip address 4.4.4.4 255.255.255.255
 ip ospf 10 area 0
 exit
 
@@ -44,8 +46,39 @@ exit
 exit
 write
 
+
+
 =========================================
 P1
+
+conf t
+
+int loopback 0
+ip address 2.2.2.2 255.255.255.255
+ip ospf 10 area 0
+exit
+
+mpls ldp router-id Loopback 0 force
+
+interface GigabitEthernet 1/0
+mpls ip
+exit
+
+interface GigabitEthernet 2/0
+mpls ip
+exit
+
+router ospf 10
+mpls ldp autoconfig area 0
+exit
+
+exit
+write 
+
+
+
+=========================================
+P2
 
 conf t
 
@@ -71,30 +104,6 @@ exit
 exit
 write 
 
-=========================================
-P2
 
-conf t
 
-int loopback 0
-ip address 4.4.4.4 255.255.255.255
-ip ospf 10 area 0
-exit
-
-mpls ldp router-id Loopback 0 force
-
-interface GigabitEthernet 1/0
-mpls ip
-exit
-
-interface GigabitEthernet 2/0
-mpls ip
-exit
-
-router ospf 10
-mpls ldp autoconfig area 0
-exit
-
-exit
-write 
 
