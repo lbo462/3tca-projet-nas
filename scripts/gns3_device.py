@@ -5,7 +5,6 @@ from backbone_device import BackboneDevice
 
 
 class GNS3Device:
-
     def __init__(self, bb_device: BackboneDevice, host: str, port: int):
         self._bb_device = bb_device
         self._host = host
@@ -30,4 +29,3 @@ class GNS3Device:
 
             tn.write(b"end\r")
             sleep(1)
-

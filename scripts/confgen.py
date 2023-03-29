@@ -1,22 +1,18 @@
 import json
 import gns3fy
 
+from exceptions import AppError
 from backbone_device import BackboneDevice
 from gns3_device import GNS3Device
 
-JSON_FILE_NAME = 'bb_config.json'
+JSON_FILE_NAME = "bb_config.json"
 
-HOST = 'localhost'
+HOST = "localhost"
 PORT = 3080
-PROJECT_NAME = 'API TEST'
-
-
-class AppError(Exception):
-    pass
+PROJECT_NAME = "API TEST"
 
 
 def main():
-
     # Connect to GNS3 server
     gns3_server = gns3fy.Gns3Connector(f"http://{HOST}:{PORT}")
 
@@ -37,11 +33,11 @@ def main():
 
     # Loop though devices
     for backbone_device_dict in conf_dict["backbone_devices"]:
-
         # Create backbone device
         backbone_device = BackboneDevice(backbone_device_dict)
 
         # Find telnet port for GNS3Device
+        # not very clean but does the job
         port = -1
         for node in lab.nodes:
             if node.name == backbone_device.name:

@@ -1,13 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Dict
 
-
-class AppError(Exception):
-    pass
-
-
-class NeighborNotLinked(Exception):
-    pass
+from exceptions import NeighborNotLinked, AppError
 
 
 # NETWORK SETUP
@@ -44,9 +38,14 @@ class BackboneDevice:
             if self._type == "edge":
                 self._clients = device_dict["clients"]
         except KeyError:
-            raise AppError("Badly formed dict")
+            raise AppError("Badly formed dict.")
 
         self._interfaces = INTERFACE_NAMES
+
+        if len(self._bb_links) > len(self._interfaces):
+            raise AppError(
+                f"Too much links for {self._name} links. Only {len(self._interfaces)} interfaces are connected."
+            )
 
     @property
     def name(self):
