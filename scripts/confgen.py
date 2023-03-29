@@ -12,7 +12,7 @@ def main():
         # create backbone_device object from its dict
         backbone_device = BackboneDevice(backbone_device_dict)
 
-        print(f"Created {backbone_device.name} :\n{backbone_device.get_config()}")
+        print(f"Created {backbone_device.name} :\n{backbone_device.get_config()} \n")
 
 
 if __name__ == "__main__":

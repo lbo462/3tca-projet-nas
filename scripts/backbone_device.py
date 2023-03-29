@@ -16,7 +16,7 @@ INTERFACE_NAMES = [
     "GigabitEthernet2/0",
     "GigabitEthernet3/0",
 ]
-INTERCO_MASK = "255.255.255.242"
+INTERCO_MASK = "255.255.255.252"
 
 # OSPF CONFIG
 OSPF_AREA = "0"
@@ -47,13 +47,14 @@ class BackboneDevice:
             raise AppError("Badly formed dict")
         
         self._interfaces = INTERFACE_NAMES
+
         
     @property
     def name(self):
         return self._name
     
     @property
-    def _ospf_id(self):
+    def _formatted_id(self):
         return f"{self._id}.{self._id}.{self._id}.{self._id}"
         
     def get_config(self) -> str:
@@ -68,7 +69,7 @@ class BackboneDevice:
 
         conf += f"""
 router ospf 10
-router-id {self._ospf_id}
+router-id {self._formatted_id}
 exit
 """
 
@@ -90,8 +91,29 @@ exit
 network {ip_addr_on_int} 0.0.0.0 area {OSPF_AREA}
 exit
 """
+        conf += "\nend \nwrite \n"
+        # configure MPLS
+        conf += f"""
+conf t 
+int loopback 0
+ip address {self._formatted_id} 255.255.255.255
+ip ospf 10 area 0
+exit 
+            
+mpls ldp router-id Loopback 0 force
 
-        # conf += "write"
+router ospf 10
+mpls ldp autoconfig area 0
+exit 
+"""
+        for i, n_id in enumerate(self._bb_links):
+            conf += f"""
+interface {self._interfaces[i]}
+mpls ip
+exit
+
+"""
+        conf += "\nend \nwrite \n"
 
         return conf
 
@@ -114,7 +136,7 @@ exit
         side = 1 if self._id == bid else 2
 
         # compute the IP@ to be unique in the network
-        first_byte = int(bid / 255)
+        first_byte = int(bid / 255) + 1
         second_byte = bid % 255
         third_byte = lid % 255
         fourth_byte = (int(lid / 255) << 2) + side

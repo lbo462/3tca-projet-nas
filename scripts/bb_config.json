@@ -5,7 +5,7 @@
             "name": "PE1",
             "type": "edge",
             "os_version": "cisco7200",
-            "bb_links": [3],
+            "bb_links": [3,6,7],
             "clients": []
         },
         {
@@ -13,9 +13,28 @@
             "name": "PE2",
             "type": "edge",
             "os_version": "cisco7200",
-            "bb_links": [4],
+            "bb_links": [4,6,7],
             "clients": []
         },
+
+        {
+            "id": 6,
+            "name": "PE6",
+            "type": "edge",
+            "os_version" : "cisco7200",
+            "bb_links": [1,2],
+            "clients" : []
+        },
+        {
+            "id": 7,
+            "name": "PE7",
+            "type": "edge",
+            "os_version" : "cisco7200",
+            "bb_links": [1,2],
+            "clients" : []
+        },
+
+
         {
             "id": 3,
             "name": "P1",
@@ -29,8 +48,20 @@
             "name": "P2",
             "type": "core",
             "os_version": "cisco7200",
-            "bb_links": [2, 3]
+            "bb_links": [3, 2, 5]
+        },
+
+        {
+            "id": 5,
+            "name":  "P5",
+            "type": "core",
+            "os_version": "cisco7200",
+            "bb_links": [3,4]
         }
+
+
+
+
     ],
 
     "clients": [
