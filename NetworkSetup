@@ -27,6 +27,8 @@ exit
 write
 
 
+=========================================
+
 
 P1 :
 
@@ -46,6 +48,7 @@ exit
 
 write
 
+=========================================
 
 P2 :
 
@@ -66,6 +69,7 @@ exit
 write
 
 
+=========================================
 
 PE2 :
 
@@ -94,7 +98,7 @@ write
 
 
 
-
+=========================================
 
 
 
@@ -106,7 +110,7 @@ CE1 :
 conf t 
 
 interface GigabitEthernet1/0
-ip address 10.10.10.2 255.255.255.0
+ip address 11.11.11.2 255.255.255.0
 no shutdown
 exit
 
@@ -115,9 +119,13 @@ ip address 50.50.50.1 255.255.255.0
 no shutdown
 exit
 
+
 exit
 
 write
+
+
+=========================================
 
 
 CR1 :
@@ -125,15 +133,18 @@ CR1 :
 conf t 
 
 interface GigabitEthernet1/0
-ip address 10.10.10.1 255.255.255.0
+ip address 11.11.11.1 255.255.255.0
 no shutdown
 exit
+
+ip route 0.0.0.0 0.0.0.0 11.11.11.2
 
 exit
 
 write
 
 
+=========================================
 
 AS 102 
 
@@ -144,7 +155,7 @@ CE2 :
 conf t 
 
 interface GigabitEthernet1/0
-ip address 10.10.10.2 255.255.255.0
+ip address 12.12.12.2 255.255.255.0
 no shutdown
 exit
 
@@ -158,20 +169,26 @@ exit
 write
 
 
+=========================================
+
 
 CR2 :
 
 conf t 
 
 interface GigabitEthernet1/0
-ip address 10.10.10.1 255.255.255.0
+ip address 12.12.12.1 255.255.255.0
 no shutdown
 exit
+
+ip route 0.0.0.0 0.0.0.0 12.12.12.2
 
 exit
 
 write
 
+
+=========================================
 
 
 AS 103 
@@ -183,7 +200,7 @@ CE3 :
 conf t 
 
 interface GigabitEthernet1/0
-ip address 10.10.10.2 255.255.255.0
+ip address 13.13.13.2 255.255.255.0
 no shutdown
 exit
 
@@ -198,20 +215,26 @@ write
 
 
 
+=========================================
+
 CR3 :
 
 conf t 
 
 interface GigabitEthernet1/0
-ip address 10.10.10.1 255.255.255.0
+ip address 13.13.13.1 255.255.255.0
 no shutdown
 exit
+
+ip route 0.0.0.0 0.0.0.0 13.13.13.2
 
 exit
 
 write
 
 
+
+=========================================
 
 AS 104
 
@@ -222,7 +245,7 @@ CE4 :
 conf t 
 
 interface GigabitEthernet1/0
-ip address 10.10.10.2 255.255.255.0
+ip address 14.14.14.2 255.255.255.0
 no shutdown
 exit
 
@@ -237,14 +260,18 @@ write
 
 
 
+=========================================
+
 CR4 :
 
 conf t 
 
 interface GigabitEthernet1/0
-ip address 10.10.10.1 255.255.255.0
+ip address 14.14.14.1 255.255.255.0
 no shutdown
 exit
+
+ip route 0.0.0.0 0.0.0.0 14.14.14.2
 
 exit
 
