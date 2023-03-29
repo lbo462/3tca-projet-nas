@@ -48,11 +48,11 @@ def main():
         # Create gns3_device object from its dict
         gns3_device = GNS3Device(backbone_device, HOST, port)
 
-        print(f"Created {backbone_device.name} :\n{backbone_device.get_config()}")
+        print(f"Created {backbone_device.name} :\n\n{backbone_device.get_config()}")
 
         # Write conf on routers
-        gns3_device.write()
-        print(f"Configuration written on GNS3.")
+        # gns3_device.write()
+        print(f"Configuration for {backbone_device.name} written on GNS3 !\n")
 
 
 if __name__ == "__main__":

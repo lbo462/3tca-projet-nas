@@ -36,7 +36,8 @@ class GNS3Device:
             write("conf t")
 
             for line in config.split("\n"):
-                write(line)
+                if not line.startswith("!"):
+                    write(line)
 
             # Exit config mode
             write("end")

@@ -17,7 +17,7 @@ OSPF_AREA = 0
 OSPF_PROCESS = 10
 
 # BGP CONFIG
-ASN = 101
+ASN = 100
 
 
 @dataclass
@@ -66,7 +66,9 @@ class BackboneDevice:
         """
         Return the config to write on the router
         """
-        conf = ""
+        conf = f"""! Global config for {self.name} #({self._id})       
+!
+"""
 
         # ------------
         # Global config
@@ -75,6 +77,7 @@ class BackboneDevice:
         # OSPF
         conf += f"""router ospf {OSPF_PROCESS}
 router-id {self._formatted_id}
+mpls ldp autoconfig area {OSPF_AREA}
 exit
 """
         # BGP
@@ -85,11 +88,23 @@ bgp router-id {self._bgp_id}
 exit
 """
 
+        # MPLS
+        conf += f"""int loopback 0
+ip address {self._formatted_id} 255.255.255.255
+ip ospf {OSPF_PROCESS} area {OSPF_AREA}
+exit    
+"""
+
         # ------------
         # Neighbor based config
         # ------------
         for i, n_id in enumerate(self._bb_links):
             ip_addr_on_int = self._get_ip(n_id)  # IP@ on interface facing neighbor
+
+            conf += f"""!
+! Configuration for neighbor {n_id} on {self._interfaces[i]}
+!
+"""
 
             # interface
             conf += f"""interface {self._interfaces[i]}
@@ -105,6 +120,13 @@ exit
 
             # BGP
             # TODO
+
+            # MPLS
+            conf += f"""mpls ldp router-id Loopback 0 force
+interface {self._interfaces[i]}
+mpls ip
+exit
+"""
 
         return conf
 
