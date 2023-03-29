@@ -1,13 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Dict
 
-
-class AppError(Exception):
-    pass
-
-
-class NeighborNotLinked(Exception):
-    pass
+from exceptions import NeighborNotLinked, AppError
 
 
 # NETWORK SETUP
@@ -16,7 +10,7 @@ INTERFACE_NAMES = [
     "GigabitEthernet2/0",
     "GigabitEthernet3/0",
 ]
-INTERCO_MASK = "255.255.255.242"
+INTERCO_MASK = "255.255.255.252"
 
 # OSPF CONFIG
 OSPF_AREA = "0"
@@ -44,16 +38,21 @@ class BackboneDevice:
             if self._type == "edge":
                 self._clients = device_dict["clients"]
         except KeyError:
-            raise AppError("Badly formed dict")
+            raise AppError("Badly formed dict.")
 
         self._interfaces = INTERFACE_NAMES
+
+        if len(self._bb_links) > len(self._interfaces):
+            raise AppError(
+                f"Too much links for {self._name} links. Only {len(self._interfaces)} interfaces are connected."
+            )
 
     @property
     def name(self):
         return self._name
 
     @property
-    def _ospf_id(self):
+    def _formatted_id(self):
         return f"{self._id}.{self._id}.{self._id}.{self._id}"
 
     def get_config(self) -> str:
@@ -68,7 +67,7 @@ class BackboneDevice:
 
         conf += f"""
 router ospf 10
-router-id {self._ospf_id}
+router-id {self._formatted_id}
 exit
 """
 
@@ -113,7 +112,7 @@ exit
         side = 1 if self._id == bid else 2
 
         # compute the IP@ to be unique in the network
-        first_byte = int(bid / 255)
+        first_byte = int(bid / 255) + 1
         second_byte = bid % 255
         third_byte = lid % 255
         fourth_byte = (int(lid / 255) << 2) + side
