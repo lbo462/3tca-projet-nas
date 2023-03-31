@@ -1,0 +1,71 @@
+RSVP Setup
+
+PE1
+
+conf t
+
+interface gigabitEthernet 1/0
+ip rsvp bandwidth
+
+exit
+
+ip rsvp sender-host 30.30.30.2 10.10.10.1 tcp 23 0 64 32
+
+end
+write
+
+==================
+
+P1
+
+conf t
+
+interface gigabitEthernet 1/0
+ip rsvp bandwidth
+
+
+exit
+
+interface gigabitEthernet 2/0
+ip rsvp bandwidth
+
+end
+write
+
+==================
+
+P2
+
+conf t
+
+interface gigabitEthernet 1/0
+ip rsvp bandwidth
+
+
+exit
+
+interface gigabitEthernet 2/0
+ip rsvp bandwidth
+
+end
+write
+
+==================
+
+PE2
+
+conf t
+
+interface gigabitEthernet 1/0
+ip rsvp bandwidth
+
+exit
+
+ip rsvp reservation-host 30.30.30.2 10.10.10.1 tcp 23 0 ff guaranteed bit rate 
+ip rsvp reservation-host 30.30.30.2 10.10.10.1 tcp 23 0 ff rate 64 32
+
+end
+write
+
+==================
+
