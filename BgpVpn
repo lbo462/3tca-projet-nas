@@ -1,0 +1,215 @@
+Configuration BGP
+
+PE1:
+
+
+
+conf t
+
+vrf definition red1
+address-family ipv4
+rd 100:1
+route-target both 100:1001
+route-target import 100:1003
+
+
+vrf definition blue1
+address-family ipv4
+rd 100:2
+route-target both 100:1002
+route-target import 100:1004
+
+exit
+
+
+
+router bgp 100
+bgp router-id 1.0.0.1
+
+address-family ipv4 vrf red1
+neighbor 50.50.50.1 remote-as 101
+neighbor 50.50.50.1 activate
+exit
+
+address-family ipv4 vrf blue1
+neighbor 100.100.100.1 remote-as 102
+neighbor 100.100.100.1 activate
+exit
+
+neighbor 4.4.4.4 remote-as 100
+address-family vpnv4
+neighbor 4.4.4.4 activate
+neighbor 4.4.4.4 update-source Loopback0
+neighbor 4.4.4.4 next-hop-self
+exit
+
+
+exit
+
+
+
+interface gigabitethernet 2/0
+vrf forwarding red1
+ip address 50.50.50.2 255.255.255.0
+exit
+
+interface gigabitethernet 3/0
+vrf forwarding blue1
+ip address 100.100.100.2 255.255.255.0
+exit
+
+
+
+
+
+
+
+exit
+write
+
+
+===================================================
+
+PE2:
+
+
+conf t
+
+vrf definition red2
+address-family ipv4
+rd 100:3
+route-target both 100:1003
+route-target import 100:1001
+
+
+vrf definition blue2
+address-family ipv4
+rd 100:4
+route-target both 100:1004
+route-target import 100:1002
+
+exit
+
+
+
+router bgp 100
+bgp router-id 1.0.0.2
+
+address-family ipv4 vrf red2
+neighbor 150.150.150.1 remote-as 103
+neighbor 150.150.150.1 activate
+exit
+
+address-family ipv4 vrf blue2
+neighbor 200.200.200.1 remote-as 104
+neighbor 200.200.200.1 activate
+exit
+
+neighbor 1.1.1.1 remote-as 100
+address-family vpnv4
+neighbor 1.1.1.1 activate
+neighbor 1.1.1.1 update-source Loopback0
+neighbor 1.1.1.1 next-hop-self
+exit
+
+
+exit
+
+
+
+interface gigabitethernet 2/0
+vrf forwarding red2
+ip address 150.150.150.2 255.255.255.0
+exit
+
+interface gigabitethernet 3/0
+vrf forwarding blue2
+ip address 200.200.200.2 255.255.255.0
+exit
+
+
+
+
+
+
+
+exit
+write
+
+
+
+
+
+===================================================
+
+CE1:
+
+
+conf t
+router bgp 101
+bgp router-id 1.0.0.0
+
+
+neighbor 50.50.50.2 remote-as 100
+network 11.11.11.0 mask 255.255.255.0
+
+
+exit
+exit
+write
+
+
+
+===================================================
+
+CE2:
+
+
+conf t
+router bgp 102
+bgp router-id 2.0.0.0
+
+
+neighbor 100.100.100.2 remote-as 100
+network 12.12.12.0 mask 255.255.255.0
+
+exit
+exit
+write
+
+
+===================================================
+
+CE3:
+
+
+conf t
+router bgp 103
+bgp router-id 3.0.0.0
+
+
+neighbor 150.150.150.2 remote-as 100
+network 13.13.13.0 mask 255.255.255.0
+
+exit
+exit
+write
+
+
+
+===================================================
+
+CE4:
+
+
+conf t
+router bgp 104
+bgp router-id 4.0.0.0
+
+
+neighbor 200.200.200.2 remote-as 100
+network 14.14.14.0 mask 255.255.255.0
+
+exit
+exit
+write
