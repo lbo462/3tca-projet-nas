@@ -3,7 +3,7 @@ from time import sleep
 from typing import List
 from dataclasses import dataclass
 
-from backbone_device import BackboneDevice
+from .backbone_device import BackboneDevice
 
 
 CLI_DELAY = 0.5

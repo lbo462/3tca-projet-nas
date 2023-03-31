@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import Dict, List
 
-from client_ce import ClientCE
-from exceptions import BadlyFormedJSON
+from .client_ce import ClientCE
+from .exceptions import BadlyFormedJSON
 
 
 @dataclass

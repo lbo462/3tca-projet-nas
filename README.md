@@ -2,6 +2,28 @@
 
 Léo BONNAIRE Léonard PRINCE Kowsigan ALAGARAJAH Hédi SFAXI Matthieu NSI ELA Mounir RADJABOU
 
+## How to use confgen
+
+<hr>
+
+1. Create a new GNS3 project
+2. Build your backbone architecture
+3. Starts your routers and answer the initial prompts to have a clean CLI
+4. Write down the JSON file describing your architecture, including your client's edge routers
+5. In a Python virtual env, install the requirements with
+```shell
+pip install -r requirements.txt 
+```
+6. Launch script with 
+```shell
+python -m confgen -c <path-to-json-file> -n <gns3-project-name>
+```
+The writing to the routers can take time. Make a coffe before the start of the process.
+
+### Actual architecture
+
+![gns3_scheme.drawio.png](gns3_scheme.drawio.png)
+
 ## How to use git
 
 <hr>

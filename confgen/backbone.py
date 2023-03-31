@@ -1,10 +1,10 @@
 import json
 from typing import List
 
-import exceptions
-from backbone_device import BackboneDevice
-from client import Client
-from gns3 import GNS3Config, GNS3Device
+from .exceptions import BadlyFormedJSON, AppError
+from .backbone_device import BackboneDevice
+from .client import Client
+from .gns3 import GNS3Config, GNS3Device
 
 
 class Backbone:
@@ -33,14 +33,12 @@ class Backbone:
 
         # Verify keys
         if "backbone_devices" not in config_dict_full:
-            raise exceptions.BadlyFormedJSON(
+            raise BadlyFormedJSON(
                 f'"backbone_device" key not found in {config_file_path}'
             )
 
         if "clients" not in config_dict_full:
-            raise exceptions.BadlyFormedJSON(
-                f'"clients" key not found in {config_file_path}'
-            )
+            raise BadlyFormedJSON(f'"clients" key not found in {config_file_path}')
 
         # Create dicts
         config_dict_backbone_devices = config_dict_full["backbone_devices"]
@@ -56,9 +54,7 @@ class Backbone:
                 if node.name == backbone_device.name:
                     port = node.console
             if port == -1:
-                raise exceptions.AppError(
-                    f"`{backbone_device.name}` not found on GNS3."
-                )
+                raise AppError(f"`{backbone_device.name}` not found on GNS3.")
             self._gns3_devices.append(
                 GNS3Device(backbone_device, gns3_config.host, port)
             )
@@ -69,7 +65,7 @@ class Backbone:
             elif backbone_device.type == "core":
                 self._core_routers.append(backbone_device)
             else:
-                raise exceptions.AppError(
+                raise AppError(
                     f"Router type `{backbone_device}` is invalid. Valid types are `edge` and `core`"
                 )
 

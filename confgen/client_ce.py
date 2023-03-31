@@ -1,7 +1,7 @@
-from exceptions import BadlyFormedJSON
-
 from dataclasses import dataclass
 from typing import List, Dict
+
+from .exceptions import BadlyFormedJSON
 
 
 @dataclass
