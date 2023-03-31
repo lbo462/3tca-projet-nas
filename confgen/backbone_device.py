@@ -1,9 +1,9 @@
 from typing import List, Dict
 
-from exceptions import NeighborNotLinked, AppError
-from constants import ASN, OSPF_PROCESS, OSPF_AREA, INTERCO_MASK
-from client import Client
-from client_ce import ClientCE
+from .exceptions import NeighborNotLinked, AppError
+from .constants import ASN, OSPF_PROCESS, OSPF_AREA, INTERCO_MASK
+from .client import Client
+from .client_ce import ClientCE
 
 
 # NETWORK SETUP
@@ -176,7 +176,6 @@ exit
 
         # Links to clients
         for ce in self._clients_ce:
-
             # interface
             conf += f"""interface {self._interfaces[interface_counter]}
 ip address {ce.ip_addr}

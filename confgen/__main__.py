@@ -1,8 +1,8 @@
 import gns3fy
 import argparse
 
-from backbone import Backbone
-from gns3 import GNS3Config
+from .backbone import Backbone
+from .gns3 import GNS3Config
 
 
 def main():
@@ -36,6 +36,7 @@ def main():
     print("Starting writing config to routers ...")
     backbone.write_configs()
 
+
 def get_args():
     """
     Define a custom argument parser and return passed args
@@ -43,39 +44,25 @@ def get_args():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        "--path_to_json",
-        "-c",
-        required = True,
-        help="Path to the JSON config file."
+        "--path_to_json", "-c", required=True, help="Path to the JSON config file."
     )
 
     parser.add_argument(
-        "--host",
-        "-h",
-        help="Hostname for the GNS3 server. Default is `localhost`."
+        "--host", help="Hostname for the GNS3 server. Default is `localhost`."
     )
 
     parser.add_argument(
-        "--port",
-        "-p",
-        help="Port for the GNS3 server. Default is 3080."
+        "--port", "-p", help="Port for the GNS3 server. Default is 3080."
     )
 
-    parser.add_argument(
-        "--name",
-        "-n",
-        required = True,
-        help="GNS3 project name."
-    )
+    parser.add_argument("--name", "-n", required=True, help="GNS3 project name.")
 
     parser.add_argument(
-        "--verbose"
-        "-v",
-        action="store_true",
-        help="More verbose output"
+        "--verbose", "-v", action="store_true", help="More verbose output"
     )
 
     return parser.parse_args()
+
 
 if __name__ == "__main__":
     main()
