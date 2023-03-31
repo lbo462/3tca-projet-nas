@@ -1,6 +1,8 @@
 from typing import List, Dict
 
 from exceptions import NeighborNotLinked, AppError
+from constants import ASN, OSPF_PROCESS, OSPF_AREA, INTERCO_MASK
+from client import Client
 
 
 # NETWORK SETUP
@@ -9,31 +11,24 @@ INTERFACE_NAMES = [
     "GigabitEthernet2/0",
     "GigabitEthernet3/0",
 ]
-INTERCO_MASK = "255.255.255.252"
-
-# OSPF CONFIG
-OSPF_AREA = 0
-OSPF_PROCESS = 10
-
-# BGP CONFIG
-ASN = 100
 
 
 class BackboneDevice:
-    _id: int
-    _name: str
-    type: str
-    _os_version: str
-    _bb_links: List[int]
-    # clients: List[str] # required if type == "edge"
-    _interfaces: List[str]
-
     def __init__(self, device_dict: Dict):
+        """
+
+        :param device_dict: Dict from JSON config file
+        """
+
+        # Define empty list for future config
+        self._edge_routers = []
+        self._clients = []
+
         try:
-            self._id = device_dict["id"]
+            self.id = device_dict["id"]
             self._name = device_dict["name"]
             self.type = device_dict["type"]
-            self._os_version = device_dict["os_version"]
+            self._os_version = device_dict["os_version"]  # Useless but RP
             self._bb_links = device_dict["bb_links"]
 
             if self.type == "edge":
@@ -48,23 +43,37 @@ class BackboneDevice:
                 f"Too much links for {self._name} links. Only {len(self._interfaces)} interfaces are connected."
             )
 
+    def set_edge(self, edge_routers: List, clients: List[Client]):
+        """
+        Retrieve necessary information
+        :param edge_routers: edges routers of the backbone. Only necessary for edge routers
+        :param clients: a list of every client. Only necessary for edge routers
+        """
+        if self.type != "edge":
+            raise AppError(
+                f"`set_edge` should only be called on edge routers. {self.type} is invalid"
+            )
+
+        self._edge_routers = edge_routers
+        self._clients = clients
+
     @property
     def name(self):
         return self._name
 
     @property
-    def _formatted_id(self):
-        return f"{self._id}.{self._id}.{self._id}.{self._id}"
+    def formatted_id(self):
+        return f"{self.id}.{self.id}.{self.id}.{self.id}"
 
     @property
-    def _bgp_id(self):
-        return f"1.0.0.{self._id}"
+    def bgp_id(self):
+        return f"1.0.0.{self.id}"
 
     def get_config(self) -> str:
         """
         Return the config to write on the router
         """
-        conf = f"""! Global config for {self.name} #({self._id})       
+        conf = f"""! Global config for {self.name} #({self.id})       
 !
 """
 
@@ -73,8 +82,9 @@ class BackboneDevice:
         # ------------
 
         # OSPF
-        conf += f"""router ospf {OSPF_PROCESS}
-router-id {self._formatted_id}
+        conf += f"""! Global OSPF config
+router ospf {OSPF_PROCESS}
+router-id {self.formatted_id}
 ip ospf network point-to-point
 mpls ldp autoconfig area {OSPF_AREA}
 exit
@@ -82,14 +92,32 @@ exit
         # BGP
         if self.type == "edge":
             # configure BGP
-            conf += f"""router bgp {ASN}
-bgp router-id {self._bgp_id}
+            conf += f"""! Global BGP config
+router bgp {ASN}
+bgp router-id {self.bgp_id}
+"""
+
+        # Configure connection to every other edge routers
+        for edge_router in self._edge_routers:
+            if self.id == edge_router.id:  # Ignore self
+                continue
+
+            pe_id = edge_router.formatted_id
+            conf += f"""! BGP config for {edge_router.name} #({edge_router.id})
+neighbor {pe_id} remote-as {ASN}
+address-family vpnv4
+neighbor {pe_id} activate
+neighbor {pe_id} update-source Loopback0
+neighbor {pe_id} next-hop-self
 exit
 """
 
+        conf += "exit\n"  # exit BGP configuration
+
         # MPLS
-        conf += f"""int loopback 0
-ip address {self._formatted_id} 255.255.255.255
+        conf += f"""! MPLS config
+int loopback 0
+ip address {self.formatted_id} 255.255.255.255
 ip ospf {OSPF_PROCESS} area {OSPF_AREA}
 exit    
 """
@@ -117,9 +145,6 @@ network {ip_addr_on_int} 0.0.0.0 area {OSPF_AREA}
 exit
 """
 
-            # BGP
-            # TODO
-
             # MPLS
             conf += f"""mpls ldp router-id Loopback 0 force
 interface {self._interfaces[i]}
@@ -137,15 +162,15 @@ exit
 
         if neighbor_id not in self._bb_links:
             raise NeighborNotLinked(
-                f"Neighbor #{neighbor_id} is not in bb_links for router {self._id}"
+                f"Neighbor #{neighbor_id} is not in bb_links for router {self.id}"
             )
 
         # finds out biggest and lowest ID
-        bid = max(self._id, neighbor_id)
-        lid = min(self._id, neighbor_id)
+        bid = max(self.id, neighbor_id)
+        lid = min(self.id, neighbor_id)
 
         # choose on which side of the link is self
-        side = 1 if self._id == bid else 2
+        side = 1 if self.id == bid else 2
 
         # compute the IP@ to be unique in the network
         first_byte = int(bid / 255) + 1

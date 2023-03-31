@@ -77,6 +77,10 @@ class Backbone:
         for client_dict in config_dict_clients:
             self._clients.append(Client(client_dict))
 
+        # Inform edge routers of backbone and clients infrastructure
+        for edge_router in self._edge_routers:
+            edge_router.set_edge(self._edge_routers, self._clients)
+
     def get_all_configs(self) -> str:
         """
 
