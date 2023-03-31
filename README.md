@@ -19,6 +19,9 @@ python -m confgen -c <path-to-json-file> -n <gns3-project-name>
 ```
 The writing to the routers can take time. Make a coffe before the start of the process.
 
+### Actual architecture
+
+![gns3_scheme.drawio.png](gns3_scheme.drawio.png)
 
 ## How to use git
 
