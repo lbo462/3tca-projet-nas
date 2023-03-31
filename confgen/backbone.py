@@ -38,9 +38,7 @@ class Backbone:
             )
 
         if "clients" not in config_dict_full:
-            raise BadlyFormedJSON(
-                f'"clients" key not found in {config_file_path}'
-            )
+            raise BadlyFormedJSON(f'"clients" key not found in {config_file_path}')
 
         # Create dicts
         config_dict_backbone_devices = config_dict_full["backbone_devices"]
@@ -56,9 +54,7 @@ class Backbone:
                 if node.name == backbone_device.name:
                     port = node.console
             if port == -1:
-                raise AppError(
-                    f"`{backbone_device.name}` not found on GNS3."
-                )
+                raise AppError(f"`{backbone_device.name}` not found on GNS3.")
             self._gns3_devices.append(
                 GNS3Device(backbone_device, gns3_config.host, port)
             )

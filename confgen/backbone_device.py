@@ -176,7 +176,6 @@ exit
 
         # Links to clients
         for ce in self._clients_ce:
-
             # interface
             conf += f"""interface {self._interfaces[interface_counter]}
 ip address {ce.ip_addr}
