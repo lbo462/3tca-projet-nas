@@ -142,16 +142,20 @@ exit
         # ------------
         # Neighbor based config
         # ------------
-        for i, n_id in enumerate(self._bb_links):
+
+        interface_counter = 0
+
+        # Intra-backbone links
+        for n_id in self._bb_links:
             ip_addr_on_int = self._get_ip(n_id)  # IP@ on interface facing neighbor
 
             conf += f"""!
-! Configuration for neighbor {n_id} on {self._interfaces[i]}
+! Configuration for neighbor {n_id} on {self._interfaces[interface_counter]}
 !
 """
 
             # interface
-            conf += f"""interface {self._interfaces[i]}
+            conf += f"""interface {self._interfaces[interface_counter]}
 ip address {ip_addr_on_int} {INTERCO_MASK}
 no shut
 exit
@@ -164,8 +168,19 @@ exit
 
             # MPLS
             conf += f"""mpls ldp router-id Loopback 0 force
-interface {self._interfaces[i]}
+interface {self._interfaces[interface_counter]}
 mpls ip
+exit
+"""
+            interface_counter += 1
+
+        # Links to clients
+        for ce in self._clients_ce:
+
+            # interface
+            conf += f"""interface {self._interfaces[interface_counter]}
+ip address {ce.ip_addr}
+no shut
 exit
 """
 
