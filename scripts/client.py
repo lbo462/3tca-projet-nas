@@ -1,6 +1,6 @@
-from dataclasses import dataclass
+from typing import Dict
 
 
-@dataclass
 class Client:
-    pass
+    def __init__(self, client_dict: Dict):
+        pass

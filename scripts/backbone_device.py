@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import List, Dict
 
 from exceptions import NeighborNotLinked, AppError
@@ -20,11 +19,10 @@ OSPF_PROCESS = 10
 ASN = 100
 
 
-@dataclass
 class BackboneDevice:
     _id: int
     _name: str
-    _type: str
+    type: str
     _os_version: str
     _bb_links: List[int]
     # clients: List[str] # required if type == "edge"
@@ -34,11 +32,11 @@ class BackboneDevice:
         try:
             self._id = device_dict["id"]
             self._name = device_dict["name"]
-            self._type = device_dict["type"]
+            self.type = device_dict["type"]
             self._os_version = device_dict["os_version"]
             self._bb_links = device_dict["bb_links"]
 
-            if self._type == "edge":
+            if self.type == "edge":
                 self._clients = device_dict["clients"]
         except KeyError:
             raise AppError("Badly formed dict.")
@@ -77,11 +75,12 @@ class BackboneDevice:
         # OSPF
         conf += f"""router ospf {OSPF_PROCESS}
 router-id {self._formatted_id}
+ip ospf network point-to-point
 mpls ldp autoconfig area {OSPF_AREA}
 exit
 """
         # BGP
-        if self._type == "edge":
+        if self.type == "edge":
             # configure BGP
             conf += f"""router bgp {ASN}
 bgp router-id {self._bgp_id}
