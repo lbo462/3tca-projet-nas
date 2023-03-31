@@ -40,7 +40,7 @@
             "name": "P1",
             "type": "core",
             "os_version": "cisco7200",
-            "bb_links": [1, 4]
+            "bb_links": [1, 4, 5]
         },
 
         {
@@ -48,7 +48,7 @@
             "name": "P2",
             "type": "core",
             "os_version": "cisco7200",
-            "bb_links": [3, 2, 5]
+            "bb_links": [2, 3, 5]
         },
 
         {
