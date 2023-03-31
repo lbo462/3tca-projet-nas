@@ -1,9 +1,9 @@
 from typing import List, Dict
 
-from exceptions import NeighborNotLinked, AppError
-from constants import ASN, OSPF_PROCESS, OSPF_AREA, INTERCO_MASK
-from client import Client
-from client_ce import ClientCE
+from .exceptions import NeighborNotLinked, AppError
+from .constants import ASN, OSPF_PROCESS, OSPF_AREA, INTERCO_MASK
+from .client import Client
+from .client_ce import ClientCE
 
 
 # NETWORK SETUP
