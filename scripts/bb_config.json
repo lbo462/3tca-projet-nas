@@ -6,7 +6,9 @@
             "type": "edge",
             "os_version": "cisco7200",
             "bb_links": [2],
-            "clients": []
+            "clients": [
+                [1, 1]
+            ]
         },
         {
             "id": 2,
@@ -28,11 +30,31 @@
             "type": "edge",
             "os_version": "cisco7200",
             "bb_links": [3],
-            "clients": []
+            "clients": [
+                [1, 2]
+            ]
         }
     ],
 
     "clients": [
-        
+        {
+          "id": 1,
+          "name": "Red telecom",
+          "asn": 101,
+          "ce": [
+              {
+                  "id": 1,
+                  "name": "Red telecom CE1",
+                  "ip_addr": "11.11.11.2",
+                  "vpn_connections": [2]
+              },
+              {
+                  "id": 2,
+                  "name": "Red telecom CE2",
+                  "ip_addr": "11.11.10.2",
+                  "vpn_connections": [1]
+              }
+          ]
+        }
     ]
 }

@@ -3,6 +3,7 @@ from typing import List, Dict
 from exceptions import NeighborNotLinked, AppError
 from constants import ASN, OSPF_PROCESS, OSPF_AREA, INTERCO_MASK
 from client import Client
+from client_ce import ClientCE
 
 
 # NETWORK SETUP
@@ -22,7 +23,7 @@ class BackboneDevice:
 
         # Define empty list for future config
         self._edge_routers = []
-        self._clients = []
+        self._clients_ce: List[ClientCE] = []
 
         try:
             self.id = device_dict["id"]
@@ -32,7 +33,7 @@ class BackboneDevice:
             self._bb_links = device_dict["bb_links"]
 
             if self.type == "edge":
-                self._clients = device_dict["clients"]
+                self._clients_id = device_dict["clients"]
         except KeyError:
             raise AppError("Badly formed dict.")
 
@@ -43,11 +44,11 @@ class BackboneDevice:
                 f"Too much links for {self._name} links. Only {len(self._interfaces)} interfaces are connected."
             )
 
-    def set_edge(self, edge_routers: List, clients: List[Client]):
+    def set_edge(self, edge_routers: List, every_clients: List[Client]):
         """
         Retrieve necessary information
         :param edge_routers: edges routers of the backbone. Only necessary for edge routers
-        :param clients: a list of every client. Only necessary for edge routers
+        :param every_clients: a list of every client. Only necessary for edge routers
         """
         if self.type != "edge":
             raise AppError(
@@ -55,7 +56,12 @@ class BackboneDevice:
             )
 
         self._edge_routers = edge_routers
-        self._clients = clients
+
+        # Collect connected ce clients from the list of every client
+        for client in every_clients:
+            for ce in client.ce:
+                if [client.id, ce.id] in self._clients_id:
+                    self._clients_ce.append(ce)
 
     @property
     def name(self):
@@ -91,19 +97,30 @@ exit
 """
         # BGP
         if self.type == "edge":
-            # configure BGP
-            conf += f"""! Global BGP config
+            conf += "! BGP/ VPN config\n"
+
+            for ce in self._clients_ce:
+                conf += f"""! VRF
+vrf destination {ce.formatted_name}
+address-family ipv4
+rd {100 + ce.client_id}:{ce.id}
+route-target both 1000:{1000 + ce.id}
+"""
+                for vpn_connection in ce.vpn_connections:
+                    conf += f"route-target import 1000:{1000 + vpn_connection}\n"
+
+            conf += f"""! ---
 router bgp {ASN}
 bgp router-id {self.bgp_id}
 """
 
-        # Configure connection to every other edge routers
-        for edge_router in self._edge_routers:
-            if self.id == edge_router.id:  # Ignore self
-                continue
+            # Configure connection to every other edge routers
+            for edge_router in self._edge_routers:
+                if self.id == edge_router.id:  # Ignore self
+                    continue
 
-            pe_id = edge_router.formatted_id
-            conf += f"""! BGP config for {edge_router.name} #({edge_router.id})
+                pe_id = edge_router.formatted_id
+                conf += f"""! BGP config for {edge_router.name} #({edge_router.id})
 neighbor {pe_id} remote-as {ASN}
 address-family vpnv4
 neighbor {pe_id} activate
@@ -112,7 +129,7 @@ neighbor {pe_id} next-hop-self
 exit
 """
 
-        conf += "exit\n"  # exit BGP configuration
+            conf += "exit\n"  # exit BGP configuration
 
         # MPLS
         conf += f"""! MPLS config
