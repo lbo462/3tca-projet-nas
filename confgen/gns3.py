@@ -58,6 +58,6 @@ class GNS3Device:
             log += write("end")
 
             # Write changes to startup config
-            log += write("write")
+            log += write("write\r")
 
         return log

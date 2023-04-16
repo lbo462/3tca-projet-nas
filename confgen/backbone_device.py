@@ -91,7 +91,6 @@ class BackboneDevice:
         conf += f"""! Global OSPF config
 router ospf {OSPF_PROCESS}
 router-id {self.formatted_id}
-ip ospf network point-to-point
 mpls ldp autoconfig area {OSPF_AREA}
 exit
 """
@@ -101,7 +100,7 @@ exit
 
             for ce in self._clients_ce:
                 conf += f"""! VRF
-vrf destination {ce.formatted_name}
+vrf definition {ce.formatted_name}
 address-family ipv4
 rd {100 + ce.client_id}:{ce.id}
 route-target both 1000:{1000 + ce.id}
@@ -109,9 +108,11 @@ route-target both 1000:{1000 + ce.id}
                 for vpn_connection in ce.vpn_connections:
                     conf += f"route-target import 1000:{1000 + vpn_connection}\n"
 
-            conf += f"""! ---
+                    conf += f"""! ---
 router bgp {ASN}
 bgp router-id {self.bgp_id}
+address-family ipv4 unicast vrf {ce.formatted_name}
+redistribute connected
 """
 
             # Configure connection to every other edge routers
@@ -157,6 +158,8 @@ exit
             # interface
             conf += f"""interface {self._interfaces[interface_counter]}
 ip address {ip_addr_on_int} {INTERCO_MASK}
+ip ospf {OSPF_PROCESS} area {OSPF_AREA}
+ip ospf network point-to-point
 no shut
 exit
 """
@@ -178,6 +181,7 @@ exit
         for ce in self._clients_ce:
             # interface
             conf += f"""interface {self._interfaces[interface_counter]}
+vrf forwarding {ce.formatted_name}
 ip address {ce.ip_addr}
 no shut
 exit
