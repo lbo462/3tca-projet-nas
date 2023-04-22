@@ -20,6 +20,6 @@ class Client:
             self.name = client_dict["name"]
             self.asn = client_dict["asn"]
             for client_ce_dict in client_dict["ce"]:
-                self.ce.append(ClientCE(self.id, client_ce_dict))
+                self.ce.append(ClientCE(self.id, self.asn, client_ce_dict))
         except KeyError:
             raise BadlyFormedJSON("Client badly formed in JSON")
