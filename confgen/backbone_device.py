@@ -170,10 +170,10 @@ neighbor {ce.ip_addr_client_side} activate
 exit
 """
 
-
             # Intra-backbone
             for edge_router in self._edge_routers:
-                if self.id == edge_router.id: continue  # Ignore self
+                if self.id == edge_router.id:
+                    continue  # Ignore self
                 pe_id = edge_router.formatted_id
                 conf += f"""! BGP connection to {edge_router.name} #({edge_router.id})
 neighbor {pe_id} remote-as {ASN}
@@ -184,13 +184,9 @@ neighbor {pe_id} next-hop-self
 exit
 """
 
-            conf += "exit\n" # exit router bgp configuration
+            conf += "exit\n"  # exit router bgp configuration
 
         return conf
-
-
-
-
 
     def get_config_(self) -> str:
         """

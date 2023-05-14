@@ -3,6 +3,7 @@ from time import sleep
 from typing import List
 from dataclasses import dataclass
 
+from .settings import APP_ARGS
 from .backbone_device import BackboneDevice
 
 
@@ -34,11 +35,16 @@ class GNS3Device:
             def write(line_: str) -> str:
                 """
                 Transform line to byte and send to router with a delay
-                :return: passed arg
+                :return: passed arg (with a line break !)
                 """
-                tn.write(bytearray(f"{line_}\r", "utf-8"))
-                sleep(CLI_DELAY)
-                return line_
+                if APP_ARGS.verbose:
+                    print(
+                        f"{'(dry) ' if APP_ARGS.dry_run else ''}{self.name} : {line_}"
+                    )
+                if not APP_ARGS.dry_run:
+                    tn.write(bytearray(f"{line_}\r", "utf-8"))
+                    sleep(CLI_DELAY)
+                return line_ + "\n"
 
             # Retrieve config to write
             config = self._bb_device.get_config()
