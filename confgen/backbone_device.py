@@ -80,6 +80,8 @@ class BackboneDevice:
 !
 """
 
+        conf += "ip cef\n"
+
         # ------------
         # Network config
         # ------------
@@ -95,6 +97,8 @@ exit
 """
             interface_counter += 1
 
+        ce_interface_start = interface_counter  # Keep the value for later on to add VRF to client interfaces
+
         # Extra-backbone links
         for ce in self._clients_ce:
             conf += f"""interface {self._interfaces[interface_counter]}
@@ -103,6 +107,8 @@ no shut
 exit
 """
             interface_counter += 1
+
+        interface_counter = ce_interface_start  # Reset counter
 
         # ------------
         # OSPF config
@@ -169,6 +175,14 @@ neighbor {ce.ip_addr_client_side} remote-as {ce.asn}
 neighbor {ce.ip_addr_client_side} activate
 exit
 """
+                # Add vrf to interfaces
+                conf += f"""interface {self._interfaces[interface_counter]}
+vrf forwarding {ce.formatted_name}
+ip address {ce.ip_addr_bb_side}
+exit
+"""
+
+                interface_counter += 1
 
             # Intra-backbone
             for edge_router in self._edge_routers:
@@ -177,9 +191,9 @@ exit
                 pe_id = edge_router.formatted_id
                 conf += f"""! BGP connection to {edge_router.name} #({edge_router.id})
 neighbor {pe_id} remote-as {ASN}
+neighbor {pe_id} update-source Loopback0
 address-family vpnv4
 neighbor {pe_id} activate
-neighbor {pe_id} update-source Loopback0
 neighbor {pe_id} next-hop-self
 exit
 """
@@ -192,9 +206,8 @@ exit
         """
         Return the config to write on the router
         """
-        conf = f"""! Global config for {self.name} #({self.id})       
-!
-"""
+        conf = f"""! Global config for {self.name} #({self.id}) 
+!"""
 
         # ------------
         # Global config
