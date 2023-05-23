@@ -7,7 +7,7 @@ from .settings import APP_ARGS
 from .backbone_device import BackboneDevice
 
 
-CLI_DELAY = 0.5
+CLI_DELAY = 0.2
 
 
 @dataclass
@@ -42,6 +42,7 @@ class GNS3Device:
                         f"{'(dry) ' if APP_ARGS.dry_run else ''}{self.name} : {line_}"
                     )
                 if not APP_ARGS.dry_run:
+                    input("")
                     tn.write(bytearray(f"{line_}\r", "utf-8"))
                     sleep(CLI_DELAY)
                 return line_ + "\n"

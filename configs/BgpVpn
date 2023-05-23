@@ -37,9 +37,10 @@ neighbor 100.100.100.1 activate
 exit
 
 neighbor 4.4.4.4 remote-as 100
+neighbor 4.4.4.4 update-source Loopback0
+
 address-family vpnv4
 neighbor 4.4.4.4 activate
-neighbor 4.4.4.4 update-source Loopback0
 neighbor 4.4.4.4 next-hop-self
 exit
 

@@ -80,7 +80,7 @@ class BackboneDevice:
 !
 """
 
-        conf += "ip cef\n"
+        conf += "ip cef\n"  # Express routing
 
         # ------------
         # Network config
@@ -108,8 +108,6 @@ exit
 """
             interface_counter += 1
 
-        interface_counter = ce_interface_start  # Reset counter
-
         # ------------
         # OSPF config
         # ------------
@@ -133,6 +131,9 @@ ip address {self.formatted_id} 255.255.255.255
 ip ospf {OSPF_PROCESS} area {OSPF_AREA}
 exit
 """
+
+        conf += "mpls ldp router-id Loopback 0 force\n"
+
         # Enable MPLS on intra-backbone links
         interface_counter = 0
         for _ in self._bb_links:
@@ -157,11 +158,11 @@ exit
             for ce in self._clients_ce:
                 conf += f"""vrf definition {ce.formatted_name}
 address-family ipv4
-rd {100 + ce.client_id}:{ce.id}
-route-target both 1000:{1000 + ce.id}
+rd {ce.asn}:{ce.id}
+route-target both {ce.asn}:{1000 + ce.id}
 """
                 for vpn_connection in ce.vpn_connections:
-                    conf += f"route-target import 1000:{1000 + vpn_connection}\n"
+                    conf += f"route-target import {ce.asn}:{1000 + vpn_connection}\n"
             conf += "exit\n"
             # end vfr definition
 
@@ -175,14 +176,6 @@ neighbor {ce.ip_addr_client_side} remote-as {ce.asn}
 neighbor {ce.ip_addr_client_side} activate
 exit
 """
-                # Add vrf to interfaces
-                conf += f"""interface {self._interfaces[interface_counter]}
-vrf forwarding {ce.formatted_name}
-ip address {ce.ip_addr_bb_side}
-exit
-"""
-
-                interface_counter += 1
 
             # Intra-backbone
             for edge_router in self._edge_routers:
@@ -200,13 +193,23 @@ exit
 
             conf += "exit\n"  # exit router bgp configuration
 
+            interface_counter = ce_interface_start  # Reset counter
+            for ce in self._clients_ce:
+                # Add vrf to interfaces
+                conf += f"""interface {self._interfaces[interface_counter]}
+vrf forwarding {ce.formatted_name}
+ip address {ce.ip_addr_bb_side}
+exit
+"""
+                interface_counter += 1
+
         return conf
 
     def get_config_(self) -> str:
         """
         Return the config to write on the router
         """
-        conf = f"""! Global config for {self.name} #({self.id}) 
+        conf = f"""! Global config for {self.name} #({self.id})
 !"""
 
         # ------------
@@ -263,7 +266,7 @@ exit
 int loopback 0
 ip address {self.formatted_id} 255.255.255.255
 ip ospf {OSPF_PROCESS} area {OSPF_AREA}
-exit    
+exit
 """
 
         # ------------

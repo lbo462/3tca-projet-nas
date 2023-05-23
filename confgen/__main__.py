@@ -42,7 +42,7 @@ def main():
     print("> Starting writing config to routers ...")
     recap = backbone.write_configs()
 
-    with open("recap.txt", "a") as f:
+    with open("recap.txt", "w") as f:
         f.write(recap)
 
     print(f"> Configuration written to routers. See `recap.txt`")
