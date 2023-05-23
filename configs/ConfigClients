@@ -1,0 +1,104 @@
+
+CE1 : 
+
+conf t 
+
+
+interface GigabitEthernet1/0
+ip address 11.11.11.2 255.255.255.0
+no shutdown
+exit
+
+interface GigabitEthernet2/0
+ip address 100.100.100.1 255.255.255.0
+no shutdown
+exit
+
+
+
+router bgp 101
+bgp router-id 3.0.0.0
+
+
+neighbor 100.100.100.2 remote-as 100
+network 11.11.11.0 mask 255.255.255.0
+
+
+exit
+exit
+write
+
+====================================================================
+
+CE2 : 
+
+conf t 
+ip cef
+
+interface GigabitEthernet1/0
+ip address 12.12.12.2 255.255.255.0
+no shutdown
+exit
+
+interface GigabitEthernet2/0
+ip address 100.100.101.1 255.255.255.0
+no shutdown
+exit
+
+
+router bgp 102
+bgp router-id 2.0.0.0
+
+
+neighbor 100.100.101.2 remote-as 100
+network 12.12.12.0 mask 255.255.255.0
+
+exit
+exit
+write
+
+===============================================================================
+
+C1 :
+
+conf t 
+
+
+interface GigabitEthernet1/0
+ip address 11.11.11.1 255.255.255.0
+no shutdown
+exit
+
+ip route 0.0.0.0 0.0.0.0 11.11.11.2
+
+exit
+
+write
+
+
+
+
+==============================================================================
+
+C2 : 
+
+
+conf t 
+ip cef
+
+interface GigabitEthernet1/0
+ip address 12.12.12.2 255.255.255.0
+no shutdown
+exit
+
+interface GigabitEthernet2/0
+ip address 100.100.100.1 255.255.255.0
+no shutdown
+exit
+
+exit
+
+write
+
+
+

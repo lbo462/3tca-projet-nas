@@ -2,12 +2,13 @@
 env/
 venv/
 __pycache__/
+# Python weird stuff
+.swp
+.pyc
 
 # IDE related
 .idea/
 .vscode/
 
-
-
-
-
+# Script recap
+recap.txt

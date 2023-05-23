@@ -1,6 +1,7 @@
 import json
 from typing import List
 
+from .settings import APP_ARGS
 from .exceptions import BadlyFormedJSON, AppError
 from .backbone_device import BackboneDevice
 from .client import Client
@@ -100,8 +101,9 @@ class Backbone:
         """
         log = "--- GNS3 write recap ---\n"
         for gns3_device in self._gns3_devices:
-            print(f"Configuring {gns3_device.name} ...")
+            if APP_ARGS.verbose:
+                print(f">> Configuring {gns3_device.name} ...")
             log += f"-- Configuration written to {gns3_device.name} --\n"
-            log += gns3_device.write()
+            log += gns3_device.write() + "\n"
         log += "--- end of GNS3 recap ---"
         return log

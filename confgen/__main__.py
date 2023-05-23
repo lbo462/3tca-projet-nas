@@ -1,24 +1,27 @@
 import gns3fy
-import argparse
 
+from .settings import APP_ARGS
 from .backbone import Backbone
 from .gns3 import GNS3Config
 
 
 def main():
-    # Retrieve args
-    args = get_args()
-    path_to_json = args.path_to_json
-    project_name = args.name
-    host = args.host if args.host else "localhost"
-    port = args.port if args.port else 3080
-    verbosity = args.verbose
+    # Read args
+    path_to_json = APP_ARGS.path_to_json
+    project_name = APP_ARGS.name
+    host = APP_ARGS.host if APP_ARGS.host else "localhost"
+    port = APP_ARGS.port if APP_ARGS.port else 3080
 
     # Connect to GNS3 server
-    gns3_server = gns3fy.Gns3Connector(f"http://{host}:{port}")
+    addr = f"http://{host}:{port}"  # noqa
+    if APP_ARGS.verbose:
+        print(f"> Connecting to {addr} ...")
+    gns3_server = gns3fy.Gns3Connector(addr)
 
     # Retrieve and open project
-    lab = gns3fy.Project(name=project_name, connector=gns3_server)
+    if APP_ARGS.verbose:
+        print(f"> Loading project ...")
+    lab = gns3fy.Project(name=project_name, connector=gns3_server)  # noqa
     lab.get()
     lab.open()
 
@@ -26,42 +29,23 @@ def main():
     gns3_config = GNS3Config(host, lab.nodes)
 
     # Create backbone
+    if APP_ARGS.verbose:
+        print(f"> Creating backbone ...")
     backbone = Backbone(path_to_json, gns3_config)
 
     # Get a preview of what is going to happen
-    if verbosity:
+    if APP_ARGS.verbose:
+        print("> Configs to send to backbone:")
         print(backbone.get_all_configs())
 
     # Configure backbone ON GNS3
-    print("Starting writing config to routers ...")
-    backbone.write_configs()
+    print("> Starting writing config to routers ...")
+    recap = backbone.write_configs()
 
+    with open("recap.txt", "w") as f:
+        f.write(recap)
 
-def get_args():
-    """
-    Define a custom argument parser and return passed args
-    """
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument(
-        "--path_to_json", "-c", required=True, help="Path to the JSON config file."
-    )
-
-    parser.add_argument(
-        "--host", help="Hostname for the GNS3 server. Default is `localhost`."
-    )
-
-    parser.add_argument(
-        "--port", "-p", help="Port for the GNS3 server. Default is 3080."
-    )
-
-    parser.add_argument("--name", "-n", required=True, help="GNS3 project name.")
-
-    parser.add_argument(
-        "--verbose", "-v", action="store_true", help="More verbose output"
-    )
-
-    return parser.parse_args()
+    print(f"> Configuration written to routers. See `recap.txt`")
 
 
 if __name__ == "__main__":

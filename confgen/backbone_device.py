@@ -76,12 +76,141 @@ class BackboneDevice:
         return f"1.0.0.{self.id}"
 
     def get_config(self) -> str:
+        conf = f"""! GLOBAL CONFIG for {self.name} #({self.id})       
+!
+"""
+
+        conf += "ip cef\n"  # Express routing
+
+        # ------------
+        # Network config
+        # ------------
+
+        interface_counter = 0
+
+        # Intra-backbone links
+        for n_id in self._bb_links:
+            conf += f"""interface {self._interfaces[interface_counter]}
+ip address {self._get_ip(n_id)} {INTERCO_MASK}
+no shut
+exit
+"""
+            interface_counter += 1
+
+        ce_interface_start = interface_counter  # Keep the value for later on to add VRF to client interfaces
+
+        # Extra-backbone links
+        for ce in self._clients_ce:
+            conf += f"""interface {self._interfaces[interface_counter]}
+ip address {ce.ip_addr_bb_side}
+no shut
+exit
+"""
+            interface_counter += 1
+
+        # ------------
+        # OSPF config
+        # ------------
+
+        conf += f"""! OSPF config
+router ospf {OSPF_PROCESS}
+router-id {self.formatted_id}
+"""
+        for n_id in self._bb_links:
+            conf += f"network {self._get_ip(n_id)} 0.0.0.0 area {OSPF_AREA}\n"
+
+        conf += "exit\n"
+
+        # ------------
+        # MPLS config
+        # ------------
+
+        conf += f"""! MPLS config
+int loopback 0
+ip address {self.formatted_id} 255.255.255.255
+ip ospf {OSPF_PROCESS} area {OSPF_AREA}
+exit
+"""
+
+        conf += "mpls ldp router-id Loopback 0 force\n"
+
+        # Enable MPLS on intra-backbone links
+        interface_counter = 0
+        for _ in self._bb_links:
+            conf += f"""interface {self._interfaces[interface_counter]}
+mpls ip
+exit
+"""
+            interface_counter += 1
+
+        # Enable auto config
+        conf += f"""router ospf {OSPF_PROCESS}
+mpls ldp autoconfig area {OSPF_AREA}
+exit
+"""
+
+        # ------------
+        # BGP VPN config
+        # ------------
+
+        if self.type == "edge":
+            # write vrf
+            for ce in self._clients_ce:
+                conf += f"""vrf definition {ce.formatted_name}
+address-family ipv4
+rd {ASN}:{ce.id}
+route-target both {ASN}:{1000 + ce.id}
+"""
+                for vpn_connection in ce.vpn_connections:
+                    conf += f"route-target import {ASN}:{1000 + vpn_connection}\n"
+            conf += "exit\n"
+            # end vfr definition
+
+            conf += f"""router bgp {ASN}
+bgp router-id {self.bgp_id}
+"""
+
+            for ce in self._clients_ce:
+                conf += f"""address-family ipv4 vrf {ce.formatted_name}
+neighbor {ce.ip_addr_client_side} remote-as {ce.asn}
+neighbor {ce.ip_addr_client_side} activate
+exit
+"""
+
+            # Intra-backbone
+            for edge_router in self._edge_routers:
+                if self.id == edge_router.id:
+                    continue  # Ignore self
+                pe_id = edge_router.formatted_id
+                conf += f"""! BGP connection to {edge_router.name} #({edge_router.id})
+neighbor {pe_id} remote-as {ASN}
+neighbor {pe_id} update-source Loopback0
+address-family vpnv4
+neighbor {pe_id} activate
+neighbor {pe_id} next-hop-self
+exit
+"""
+
+            conf += "exit\n"  # exit router bgp configuration
+
+            interface_counter = ce_interface_start  # Reset counter
+            for ce in self._clients_ce:
+                # Add vrf to interfaces
+                conf += f"""interface {self._interfaces[interface_counter]}
+vrf forwarding {ce.formatted_name}
+ip address {ce.ip_addr_bb_side}
+exit
+"""
+                interface_counter += 1
+
+        return conf
+
+    def get_config_(self) -> str:
         """
         Return the config to write on the router
         """
-        conf = f"""! Global config for {self.name} #({self.id})       
-!
-"""
+        conf = f"""! Global config for {self.name} #({self.id})
+!"""
 
         # ------------
         # Global config
@@ -91,7 +220,6 @@ class BackboneDevice:
         conf += f"""! Global OSPF config
 router ospf {OSPF_PROCESS}
 router-id {self.formatted_id}
-ip ospf network point-to-point
 mpls ldp autoconfig area {OSPF_AREA}
 exit
 """
@@ -101,7 +229,7 @@ exit
 
             for ce in self._clients_ce:
                 conf += f"""! VRF
-vrf destination {ce.formatted_name}
+vrf definition {ce.formatted_name}
 address-family ipv4
 rd {100 + ce.client_id}:{ce.id}
 route-target both 1000:{1000 + ce.id}
@@ -109,9 +237,11 @@ route-target both 1000:{1000 + ce.id}
                 for vpn_connection in ce.vpn_connections:
                     conf += f"route-target import 1000:{1000 + vpn_connection}\n"
 
-            conf += f"""! ---
+                    conf += f"""! ---
 router bgp {ASN}
 bgp router-id {self.bgp_id}
+address-family ipv4 unicast vrf {ce.formatted_name}
+redistribute connected
 """
 
             # Configure connection to every other edge routers
@@ -136,7 +266,7 @@ exit
 int loopback 0
 ip address {self.formatted_id} 255.255.255.255
 ip ospf {OSPF_PROCESS} area {OSPF_AREA}
-exit    
+exit
 """
 
         # ------------
@@ -157,6 +287,8 @@ exit
             # interface
             conf += f"""interface {self._interfaces[interface_counter]}
 ip address {ip_addr_on_int} {INTERCO_MASK}
+ip ospf {OSPF_PROCESS} area {OSPF_AREA}
+ip ospf network point-to-point
 no shut
 exit
 """
@@ -178,7 +310,8 @@ exit
         for ce in self._clients_ce:
             # interface
             conf += f"""interface {self._interfaces[interface_counter]}
-ip address {ce.ip_addr}
+vrf forwarding {ce.formatted_name}
+ip address {ce.ip_addr_bb_side}
 no shut
 exit
 """
