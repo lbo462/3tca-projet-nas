@@ -40,10 +40,10 @@
         {
           "id": 1,
           "name": "Red telecom",
-          "asn": 101,
           "ce": [
               {
                   "id": 1,
+                  "asn": 101,
                   "name": "Red telecom CE1",
                   "ip_addr_client_side": "100.100.100.1",
                   "ip_addr_bb_side": "100.100.100.2 255.255.255.0",
@@ -51,6 +51,7 @@
               },
               {
                   "id": 2,
+                  "asn": 102,
                   "name": "Red telecom CE2",
                   "ip_addr_client_side": "100.100.101.1",
                   "ip_addr_bb_side": "100.100.101.2 255.255.255.0",

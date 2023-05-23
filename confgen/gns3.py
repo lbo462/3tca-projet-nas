@@ -42,7 +42,6 @@ class GNS3Device:
                         f"{'(dry) ' if APP_ARGS.dry_run else ''}{self.name} : {line_}"
                     )
                 if not APP_ARGS.dry_run:
-                    input("")
                     tn.write(bytearray(f"{line_}\r", "utf-8"))
                     sleep(CLI_DELAY)
                 return line_ + "\n"
