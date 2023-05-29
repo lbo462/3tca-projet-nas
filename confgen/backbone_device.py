@@ -158,11 +158,11 @@ exit
             for ce in self._clients_ce:
                 conf += f"""vrf definition {ce.formatted_name}
 address-family ipv4
-rd {ASN}:{ce.id}
-route-target both {ASN}:{1000 + ce.id}
+rd {ce.asn}:{ce.id}
+route-target both {10 + ce.client_id}:{1000 + ce.id}
 """
                 for vpn_connection in ce.vpn_connections:
-                    conf += f"route-target import {ASN}:{1000 + vpn_connection}\n"
+                    conf += f"route-target import {10 + ce.client_id}:{1000 + vpn_connection}\n"
             conf += "exit\n"
             # end vfr definition
 
