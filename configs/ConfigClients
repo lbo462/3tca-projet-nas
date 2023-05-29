@@ -1,8 +1,7 @@
 
 CE1 : 
 
-conf t 
-
+conf t
 
 interface GigabitEthernet1/0
 ip address 11.11.11.2 255.255.255.0
@@ -14,26 +13,20 @@ ip address 100.100.100.1 255.255.255.0
 no shutdown
 exit
 
-
-
 router bgp 101
-bgp router-id 3.0.0.0
-
-
+bgp router-id 1.0.0.0
 neighbor 100.100.100.2 remote-as 100
 network 11.11.11.0 mask 255.255.255.0
-
-
 exit
 exit
+
 write
 
 ====================================================================
 
 CE2 : 
 
-conf t 
-ip cef
+conf t
 
 interface GigabitEthernet1/0
 ip address 12.12.12.2 255.255.255.0
@@ -45,16 +38,63 @@ ip address 100.100.101.1 255.255.255.0
 no shutdown
 exit
 
-
 router bgp 102
 bgp router-id 2.0.0.0
-
-
 neighbor 100.100.101.2 remote-as 100
 network 12.12.12.0 mask 255.255.255.0
 
 exit
 exit
+write
+
+====================================================================
+
+CE3 :
+
+conf t
+
+interface GigabitEthernet1/0
+ip address 13.13.13.2 255.255.255.0
+no shutdown
+exit
+
+interface GigabitEthernet2/0
+ip address 100.100.103.1 255.255.255.0
+no shutdown
+exit
+
+router bgp 103
+bgp router-id 3.0.0.0
+neighbor 100.100.103.2 remote-as 100
+network 13.13.13.0 mask 255.255.255.0
+exit
+exit
+
+write
+
+====================================================================
+
+CE4 :
+
+conf t
+
+interface GigabitEthernet1/0
+ip address 14.14.14.2 255.255.255.0
+no shutdown
+exit
+
+interface GigabitEthernet2/0
+ip address 100.100.104.1 255.255.255.0
+no shutdown
+exit
+
+router bgp 104
+bgp router-id 4.0.0.0
+neighbor 100.100.104.2 remote-as 100
+network 14.14.14.0 mask 255.255.255.0
+exit
+exit
+
 write
 
 ===============================================================================
@@ -63,42 +103,60 @@ C1 :
 
 conf t 
 
-
 interface GigabitEthernet1/0
 ip address 11.11.11.1 255.255.255.0
 no shutdown
 exit
 
 ip route 0.0.0.0 0.0.0.0 11.11.11.2
-
 exit
 
 write
-
-
-
 
 ==============================================================================
 
 C2 : 
 
-
-conf t 
-ip cef
+conf t
 
 interface GigabitEthernet1/0
-ip address 12.12.12.2 255.255.255.0
+ip address 12.12.12.1 255.255.255.0
 no shutdown
 exit
 
-interface GigabitEthernet2/0
-ip address 100.100.100.1 255.255.255.0
-no shutdown
-exit
-
+ip route 0.0.0.0 0.0.0.0 12.12.12.2
 exit
 
 write
 
+==============================================================================
 
+C3 :
 
+conf t
+
+interface GigabitEthernet1/0
+ip address 13.13.13.1 255.255.255.0
+no shutdown
+exit
+
+ip route 0.0.0.0 0.0.0.0 13.13.13.2
+exit
+
+write
+
+==============================================================================
+
+C4 :
+
+conf t
+
+interface GigabitEthernet1/0
+ip address 14.14.14.1 255.255.255.0
+no shutdown
+exit
+
+ip route 0.0.0.0 0.0.0.0 14.14.14.2
+exit
+
+write
